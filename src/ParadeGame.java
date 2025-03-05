@@ -121,18 +121,37 @@ public class ParadeGame {
             return;
         }
     
-        // If the parade size is greater than the value of the played card, we need to remove some cards
-        for (int i = paradeSize - 1; i >= 0; i--) {
-            Card card = parade.get(i);
-    
-            // Check if the card should be removed based on the played card
-            if (card.getColour().equals(playedCard.getColour()) || card.getValue() <= playedCard.getValue()) {
-                // Remove the card from the parade and add it to the player's collected cards
+        // If the value of the played card is 0, all cards in the parade enter removal mode
+        if (playedCard.getValue() == 0) {
+            for (int i = paradeSize - 1; i >= 0; i--) {
+                Card card = parade.get(i);
                 parade.remove(i);
                 currentPlayer.addToCollectedCards(card);
             }
+            return;
+        }
+    
+        // Loop through the parade from the back (end) to the front, excluding the card just played
+        for (int i = paradeSize - 1; i >= 0; i--) {
+            // Skip the card that was just played (it's the last card)
+            if (i == paradeSize - 1) continue;
+    
+            // Get the current card in the parade
+            Card cardInParade = parade.get(i);
+    
+            // Check if this card is in removal mode
+            if (i > playedCard.getValue()) {
+                // This card is in removal mode, now check the conditions
+                if (cardInParade.getColour().equals(playedCard.getColour()) || 
+                    cardInParade.getValue() <= playedCard.getValue()) {
+                    // Add to the removal list if the card matches removal conditions
+                    parade.remove(i);
+                    currentPlayer.addToCollectedCards(cardInParade);
+                }
+            }
         }
     }
+    
 
     private void printGameState() {
         System.out.println("Current Parade: " + parade);
