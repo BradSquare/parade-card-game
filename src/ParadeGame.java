@@ -76,7 +76,7 @@ public class ParadeGame {
                 parade.add(playedCard);
     
                 // Remove cards from the parade if necessary (based on the played card)
-                handleCardRemoval(playedCard);
+                handleCardRemoval(playedCard, currentPlayer);
     
                 // Display the current state of the parade immediately after the player plays their card
                 System.out.println("Current Parade: " + parade);
@@ -112,7 +112,7 @@ public class ParadeGame {
         return deck.isEmpty();
     }
 
-    private void handleCardRemoval(Card playedCard) {
+    private void handleCardRemoval(Card playedCard, Player currentPlayer) {
         // Get the number of cards in the parade
         int paradeSize = parade.size();
     
