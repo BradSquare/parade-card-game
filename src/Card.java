@@ -15,4 +15,8 @@ public class Card {
     public String getColour() {
         return colour;
     }
+
+    public String test() {
+        return colour;
+    }
 }
