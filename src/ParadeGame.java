@@ -140,7 +140,7 @@ public class ParadeGame {
             Card cardInParade = parade.get(i);
     
             // Check if this card is in removal mode
-            if (i < paradeSize - playedCard.getValue()) {
+            if (i < paradeSize - 1 - playedCard.getValue()) {
                 // This card is in removal mode, now check the conditions
                 if (cardInParade.getColour().equals(playedCard.getColour()) || 
                     cardInParade.getValue() <= playedCard.getValue()) {
