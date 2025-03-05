@@ -125,7 +125,7 @@ public class ParadeGame {
         if (playedCard.getValue() == 0) {
             for (int i = paradeSize - 2; i >= 0; i--) {
                 Card card = parade.get(i);
-                if (card.getColour().equals(playedCard.getColour())) {
+                if (card.getColour().equals(playedCard.getColour()) || card.getValue() == 0) {
                     parade.remove(i);
                     currentPlayer.addToCollectedCards(card);
                 }
