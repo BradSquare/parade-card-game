@@ -16,7 +16,4 @@ public class Card {
         return colour;
     }
 
-    public String test() {
-        return colour;
-    }
 }
