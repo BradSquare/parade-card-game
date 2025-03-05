@@ -123,7 +123,7 @@ public class ParadeGame {
     
         // If the value of the played card is 0, all cards in the parade enter removal mode
         if (playedCard.getValue() == 0) {
-            for (int i = paradeSize - 1; i >= 0; i--) {
+            for (int i = paradeSize - 2; i >= 0; i--) {
                 Card card = parade.get(i);
                 if (card.getColour().equals(playedCard.getColour())) {
                     parade.remove(i);
