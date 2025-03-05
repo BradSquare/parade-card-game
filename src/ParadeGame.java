@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 public class ParadeGame {
     private ArrayList<Card> deck;
@@ -7,7 +8,6 @@ public class ParadeGame {
     private ArrayList<Card> parade;
     private int currentPlayerIndex;
 
-    // Constructor to set up the game
     public ParadeGame(int numPlayers) {
         deck = new ArrayList<>();
         players = new ArrayList<>();
@@ -36,7 +36,6 @@ public class ParadeGame {
         }
     }
 
-    // Deal 5 cards to each player
     private void dealCards() {
         for (Player player : players) {
             for (int i = 0; i < 5; i++) {
@@ -45,27 +44,44 @@ public class ParadeGame {
         }
     }
 
-    // Start the game
     public void startGame() {
+        Scanner scanner = new Scanner(System.in);
+        
         while (!isGameOver()) {
             Player currentPlayer = players.get(currentPlayerIndex);
 
             // Print the game state for the current player
             printGameState();
 
-            // Simulate player playing a card (here we just play the first card in hand)
-            Card playedCard = currentPlayer.playCard(0);
-            System.out.println(currentPlayer.getName() + " played: " + playedCard);
+            System.out.println(currentPlayer.getName() + ", your turn!");
 
-            // Add the card to the parade
-            parade.add(playedCard);
+            // Display player's hand
+            System.out.println("Your Hand:");
+            for (int i = 0; i < currentPlayer.getHandSize(); i++) {
+                System.out.println(i + ": " + currentPlayer.getHand().get(i));
+            }
 
-            // Remove cards from the parade if necessary
-            handleCardRemoval(playedCard);
+            // Prompt the player to choose a card to play
+            System.out.print("Choose a card index to play: ");
+            int cardIndex = scanner.nextInt();
 
-            // Draw a new card from the deck
-            if (!deck.isEmpty()) {
-                currentPlayer.addCardToHand(deck.remove(0));
+            // Validate the input and play the chosen card
+            if (cardIndex >= 0 && cardIndex < currentPlayer.getHandSize()) {
+                Card playedCard = currentPlayer.playCard(cardIndex);
+                System.out.println(currentPlayer.getName() + " played: " + playedCard);
+
+                // Add the card to the parade
+                parade.add(playedCard);
+
+                // Remove cards from the parade if necessary
+                handleCardRemoval(playedCard);
+
+                // Draw a new card from the deck if available
+                if (!deck.isEmpty()) {
+                    currentPlayer.addCardToHand(deck.remove(0));
+                }
+            } else {
+                System.out.println("Invalid choice! You lost your turn.");
             }
 
             // Move to the next player
@@ -76,32 +92,33 @@ public class ParadeGame {
         endGame();
     }
 
-    // Check if the game is over (when the deck is empty and all players have had their turn)
     private boolean isGameOver() {
+        for (Player player : players) {
+            if (player.getCollectedCards().size() >= 6) {
+                System.out.println(player.getName() + " has collected all colors! Last round starts.");
+                return true;
+            }
+        }
+
         return deck.isEmpty();
     }
 
-    // Handle card removal from the parade (as per the rules)
     private void handleCardRemoval(Card playedCard) {
         int numCardsInParade = parade.size();
 
         if (numCardsInParade <= playedCard.getValue()) {
-            // No removal needed if the parade has fewer or equal cards than the played card
             return;
         }
 
-        // Remove cards from the parade
         for (int i = numCardsInParade - 1; i >= 0; i--) {
             Card cardInParade = parade.get(i);
 
             if (cardInParade.getValue() <= playedCard.getValue() && cardInParade.getColour().equals(playedCard.getColour())) {
-                // Move the card to the player's collected cards
                 players.get(currentPlayerIndex).addToCollectedCards(parade.remove(i));
             }
         }
     }
 
-    // Print the current game state (parade and player hands)
     private void printGameState() {
         System.out.println("Current Parade: " + parade);
         for (Player player : players) {
@@ -109,11 +126,79 @@ public class ParadeGame {
         }
     }
 
-    // End the game and print final scores
     private void endGame() {
         System.out.println("\nGame Over! Final Scores:");
+
         for (Player player : players) {
-            System.out.println(player.getName() + " Score: " + player.calculateScore());
+            System.out.println(player.getName() + "'s final hand:");
+            System.out.println("Collected Cards: " + player.getCollectedCards());
+
+            System.out.println("Discard two cards:");
+            for (int i = 0; i < 2; i++) {
+                if (player.getHandSize() > 0) {
+                    Card discardedCard = player.playCard(0); 
+                    System.out.println("Discarded: " + discardedCard);
+                }
+            }
+
+            int score = player.calculateScore();
+            score += calculateMajorityPoints(player);
+            System.out.println(player.getName() + " Score: " + score);
         }
+
+        Player winner = determineWinner();
+        System.out.println("\nThe winner is: " + winner.getName());
+    }
+
+    private int calculateMajorityPoints(Player player) {
+        int majorityPoints = 0;
+        ArrayList<Card> collectedCards = player.getCollectedCards();
+        int[] colorCount = new int[6];
+
+        for (Card card : collectedCards) {
+            switch (card.getColour()) {
+                case "Red":
+                    colorCount[0]++;
+                    break;
+                case "Blue":
+                    colorCount[1]++;
+                    break;
+                case "Yellow":
+                    colorCount[2]++;
+                    break;
+                case "Green":
+                    colorCount[3]++;
+                    break;
+                case "Purple":
+                    colorCount[4]++;
+                    break;
+                case "Orange":
+                    colorCount[5]++;
+                    break;
+            }
+        }
+
+        for (int count : colorCount) {
+            if (count > 1) {
+                majorityPoints += count;
+            }
+        }
+
+        return majorityPoints;
+    }
+
+    private Player determineWinner() {
+        Player winner = players.get(0);
+        int lowestScore = winner.calculateScore();
+
+        for (Player player : players) {
+            int score = player.calculateScore();
+            if (score < lowestScore) {
+                winner = player;
+                lowestScore = score;
+            }
+        }
+
+        return winner;
     }
 }
