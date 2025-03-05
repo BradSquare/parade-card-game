@@ -117,7 +117,7 @@ public class ParadeGame {
         int paradeSize = parade.size();
     
         // If the parade size is less than or equal to the value of the played card, no removal is necessary
-        if (paradeSize <= playedCard.getValue()) {
+        if (paradeSize - 1 <= playedCard.getValue()) {
             return;
         }
     
@@ -125,16 +125,16 @@ public class ParadeGame {
         if (playedCard.getValue() == 0) {
             for (int i = paradeSize - 1; i >= 0; i--) {
                 Card card = parade.get(i);
-                parade.remove(i);
-                currentPlayer.addToCollectedCards(card);
+                if (card.getColour().equals(playedCard.getColour())) {
+                    parade.remove(i);
+                    currentPlayer.addToCollectedCards(card);
+                }
             }
             return;
         }
     
         // Loop through the parade from the back (end) to the front, excluding the card just played
-        for (int i = paradeSize - 1; i >= 0; i--) {
-            // Skip the card that was just played (it's the last card)
-            if (i == paradeSize - 1) continue;
+        for (int i = paradeSize - 2; i >= 0; i--) {
     
             // Get the current card in the parade
             Card cardInParade = parade.get(i);
