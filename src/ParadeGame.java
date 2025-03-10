@@ -52,7 +52,9 @@ public class ParadeGame {
             Player currentPlayer = players.get(currentPlayerIndex);  // Ensure currentPlayer is defined
     
             // Print the game state for the current player
+            System.out.println("-----------------------------------------------------------------------------------------------------");
             printGameState();
+            System.out.println("-----------------------------------------------------------------------------------------------------");
     
             System.out.println(currentPlayer.getName() + ", your turn!");
     
@@ -86,8 +88,8 @@ public class ParadeGame {
             // Remove cards from the parade if necessary (based on the played card)
             handleCardRemoval(playedCard, currentPlayer);
     
-            // Display the current state of the parade
-            System.out.println("Current Parade: " + parade);
+            // // Display the current state of the parade
+            // System.out.println("Current Parade: " + parade);
     
             // Draw a new card from the deck if available
             if (!deck.isEmpty()) {
