@@ -1,12 +1,16 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class ParadeGame {
     private ArrayList<Card> deck;
     private ArrayList<Player> players;
     private ArrayList<Card> parade;
     private int currentPlayerIndex;
+    private boolean lastRound = false; //CHANGED
+
 
     public ParadeGame(int numPlayers) {
         deck = new ArrayList<>();
@@ -16,7 +20,7 @@ public class ParadeGame {
 
         // Create deck of cards
         for (int value = 0; value <= 10; value++) {
-            for (String color : new String[]{"Red", "Blue", "Yellow", "Green", "Purple", "Orange"}) {
+            for (String color : new String[] { "Red", "Blue", "Yellow", "Green", "Purple", "Orange" }) {
                 deck.add(new Card(value, color));
             }
         }
@@ -44,12 +48,62 @@ public class ParadeGame {
         }
     }
 
+    private void takeTurn() {
+        Player currentPlayer = players.get(currentPlayerIndex);
+    
+        // Print the game state
+        printGameState();
+        System.out.println(currentPlayer.getName() + ", your turn!");
+    
+        // Display player's hand
+        System.out.println("Your Hand:");
+        for (int i = 0; i < currentPlayer.getHandSize(); i++) {
+            System.out.println(i + ": " + currentPlayer.getHand().get(i));
+        }
+    
+        // Prompt the player to choose a card to play
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Choose a card index to play: ");
+        int cardIndex = scanner.nextInt();
+    
+        // Validate the input
+        if (cardIndex >= 0 && cardIndex < currentPlayer.getHandSize()) {
+            // Play the chosen card
+            Card playedCard = currentPlayer.playCard(cardIndex);
+            System.out.println(currentPlayer.getName() + " played: " + playedCard);
+    
+            // Add the card to the parade
+            parade.add(playedCard);
+    
+            // Remove cards from the parade if necessary (based on the played card)
+            handleCardRemoval(playedCard, currentPlayer);
+    
+            // Display the updated parade
+            System.out.println("Current Parade: " + parade);
+    
+            // Draw a new card from the deck if available
+            if (!deck.isEmpty()) {
+                currentPlayer.addCardToHand(deck.remove(0));
+            }
+        } else {
+            System.out.println("Invalid choice! You lost your turn.");
+        }
+    
+        // Display player's collected cards
+        System.out.println(currentPlayer.getName() + "'s Collected Cards: " + currentPlayer.getCollectedCards());
+    
+        // Move to the next player
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+    }
+
+    //CHANGED
     public void startGame() {
         Scanner scanner = new Scanner(System.in);
+        boolean extraTurn = false; // Track if the last round has started
     
         // Game loop
         while (!isGameOver()) {
-            Player currentPlayer = players.get(currentPlayerIndex);  // Ensure currentPlayer is defined
+            Player currentPlayer = players.get(currentPlayerIndex);
     
             // Print the game state for the current player
             printGameState();
@@ -78,7 +132,7 @@ public class ParadeGame {
                 // Remove cards from the parade if necessary (based on the played card)
                 handleCardRemoval(playedCard, currentPlayer);
     
-                // Display the current state of the parade immediately after the player plays their card
+                // Display the updated parade
                 System.out.println("Current Parade: " + parade);
     
                 // Draw a new card from the deck if available
@@ -93,35 +147,65 @@ public class ParadeGame {
             // Display the player's collected cards after they play their turn
             System.out.println(currentPlayer.getName() + "'s Collected Cards: " + currentPlayer.getCollectedCards());
     
+            // Check if the last round has started after this turn
+            if (lastRound) {
+                extraTurn = true;
+            }
+    
             // Move to the next player
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
         }
     
-        // End the game and show results
-        endGame();
-    }
-
-    private boolean isGameOver() {
-        for (Player player : players) {
-            if (player.getCollectedCards().size() >= 6) {
-                System.out.println(player.getName() + " has collected all colors! Last round starts.");
-                return true;
+        // If the last round was triggered, give every player **one final turn**
+        if (extraTurn) {
+            System.out.println("\nFinal round: Each player gets one more turn!\n");
+            for (int i = 0; i < players.size(); i++) {
+                takeTurn();
             }
         }
-
-        return deck.isEmpty();
+    
+        // End the game and display final results
+        endGame();
     }
+    
+    //ADDED
+    private boolean hasAllColors(Player player) {
+        Set<String> uniqueColors = new HashSet<>();
+        for (Card card : player.getCollectedCards()) {
+            uniqueColors.add(card.getColour());
+        }
+        return uniqueColors.size() == 6;
+    }
+    
+    //CHANGED
+    private boolean isGameOver() {
+        if (lastRound) {
+            return true; // End the game only after all players get their last turn
+        }
+    
+        for (Player player : players) {
+            if (hasAllColors(player)) {
+                System.out.println(player.getName() + " has collected all colors! Last round starts.");
+                lastRound = true; // ✅ Set flag to trigger the final turn
+            }
+        }
+    
+        return deck.isEmpty(); // End the game if the deck runs out
+    }
+    
 
     private void handleCardRemoval(Card playedCard, Player currentPlayer) {
         // Get the number of cards in the parade
         int paradeSize = parade.size();
-    
-        // If the parade size is less than or equal to the value of the played card, no removal is necessary
+
+        // If the parade size is less than or equal to the value of the played card, no
+        // removal is necessary
         if (paradeSize - 1 <= playedCard.getValue()) {
             return;
         }
-    
-        // If the value of the played card is 0, all cards in the parade enter removal mode
+
+        // If the value of the played card is 0, all cards in the parade enter removal
+        // mode
         if (playedCard.getValue() == 0) {
             for (int i = paradeSize - 2; i >= 0; i--) {
                 Card card = parade.get(i);
@@ -132,18 +216,19 @@ public class ParadeGame {
             }
             return;
         }
-    
-        // Loop through the parade from the back (end) to the front, excluding the card just played
+
+        // Loop through the parade from the back (end) to the front, excluding the card
+        // just played
         for (int i = paradeSize - 2; i >= 0; i--) {
-    
+
             // Get the current card in the parade
             Card cardInParade = parade.get(i);
-    
+
             // Check if this card is in removal mode
             if (i < paradeSize - playedCard.getValue()) {
                 // This card is in removal mode, now check the conditions
-                if (cardInParade.getColour().equals(playedCard.getColour()) || 
-                    cardInParade.getValue() <= playedCard.getValue()) {
+                if (cardInParade.getColour().equals(playedCard.getColour()) ||
+                        cardInParade.getValue() <= playedCard.getValue()) {
                     // Add to the removal list if the card matches removal conditions
                     parade.remove(i);
                     currentPlayer.addToCollectedCards(cardInParade);
@@ -151,7 +236,6 @@ public class ParadeGame {
             }
         }
     }
-    
 
     private void printGameState() {
         System.out.println("Current Parade: " + parade);
@@ -162,32 +246,32 @@ public class ParadeGame {
 
     private void endGame() {
         System.out.println("\nGame Over! Final Scores:");
-    
+
         // Display each player's collected cards
         for (Player player : players) {
             System.out.println(player.getName() + "'s Collected Cards: " + player.getCollectedCards());
-    
+
             // Continue with discarding cards and calculating score
             System.out.println("Collected Cards: " + player.getCollectedCards());
-    
+
             // Ask the player to discard 2 cards (we'll simulate this step for now)
             System.out.println("Discard two cards:");
             for (int i = 0; i < 2; i++) {
                 if (player.getHandSize() > 0) {
-                    Card discardedCard = player.playCard(0);  // Automatically discard the first card
+                    Card discardedCard = player.playCard(0); // Automatically discard the first card
                     System.out.println("Discarded: " + discardedCard);
                 }
             }
-    
+
             // Calculate score: sum of values of all collected cards + majority points
             int score = player.calculateScore();
-    
+
             // Count majority points per color
             score += calculateMajorityPoints(player);
-    
+
             System.out.println(player.getName() + " Score: " + score);
         }
-    
+
         // Determine the winner (player with the lowest score)
         Player winner = determineWinner();
         System.out.println("\nThe winner is: " + winner.getName());

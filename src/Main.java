@@ -3,5 +3,7 @@ public class Main {
         // Start a game with 2 players for simplicity
         ParadeGame game = new ParadeGame(2);
         game.startGame(); 
-    }
 }
+}
+
+
