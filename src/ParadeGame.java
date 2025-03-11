@@ -52,7 +52,9 @@ public class ParadeGame {
             Player currentPlayer = players.get(currentPlayerIndex);  // Ensure currentPlayer is defined
     
             // Print the game state for the current player
+            System.out.println("-----------------------------------------------------------------------------------------------------");
             printGameState();
+            System.out.println("-----------------------------------------------------------------------------------------------------");
     
             System.out.println(currentPlayer.getName() + ", your turn!");
     
@@ -62,32 +64,36 @@ public class ParadeGame {
                 System.out.println(i + ": " + currentPlayer.getHand().get(i));
             }
     
-            // Prompt the player to choose a card to play
-            System.out.print("Choose a card index to play: ");
-            int cardIndex = scanner.nextInt();
-    
-            // Validate the input and play the chosen card
-            if (cardIndex >= 0 && cardIndex < currentPlayer.getHandSize()) {
-                // Play the chosen card
-                Card playedCard = currentPlayer.playCard(cardIndex);
-                System.out.println(currentPlayer.getName() + " played: " + playedCard);
-    
-                // Add the card to the parade
-                parade.add(playedCard);
-    
-                // Remove cards from the parade if necessary (based on the played card)
-                handleCardRemoval(playedCard, currentPlayer);
-    
-                // Display the current state of the parade immediately after the player plays their card
-                System.out.println("Current Parade: " + parade);
-    
-                // Draw a new card from the deck if available
-                if (!deck.isEmpty()) {
-                    currentPlayer.addCardToHand(deck.remove(0));
+            int cardIndex;
+            while (true) {  // Keep asking for input until a valid one is given
+                System.out.print("Choose a card index to play: ");
+                if (scanner.hasNextInt()) {
+                    cardIndex = scanner.nextInt();
+                    if (cardIndex >= 0 && cardIndex < currentPlayer.getHandSize()) {
+                        break;  // Exit loop when a valid index is provided
+                    }
+                } else {
+                    scanner.next();  // Clear invalid input
                 }
+                System.out.println("Invalid choice! Please enter a valid card index.");
+            }
+
+            // Play the chosen card
+            Card playedCard = currentPlayer.playCard(cardIndex);
+            System.out.println(currentPlayer.getName() + " played: " + playedCard);
     
-            } else {
-                System.out.println("Invalid choice! You lost your turn.");
+            // Add the card to the parade
+            parade.add(playedCard);
+    
+            // Remove cards from the parade if necessary (based on the played card)
+            handleCardRemoval(playedCard, currentPlayer);
+    
+            // // Display the current state of the parade
+            // System.out.println("Current Parade: " + parade);
+    
+            // Draw a new card from the deck if available
+            if (!deck.isEmpty()) {
+                currentPlayer.addCardToHand(deck.remove(0));
             }
     
             // Display the player's collected cards after they play their turn
@@ -99,6 +105,7 @@ public class ParadeGame {
     
         // End the game and show results
         endGame();
+        scanner.close();
     }
 
     private boolean isGameOver() {
