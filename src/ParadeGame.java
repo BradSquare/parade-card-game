@@ -7,6 +7,8 @@ public class ParadeGame {
     private ArrayList<Player> players;
     private ArrayList<Card> parade;
     private int currentPlayerIndex;
+    private boolean lastRoundTriggered = false;
+    private int lastRoundTurnsTaken = 0;     
 
     public ParadeGame(int numPlayers) {
         deck = new ArrayList<>();
@@ -20,6 +22,7 @@ public class ParadeGame {
                 deck.add(new Card(value, color));
             }
         }
+
         Collections.shuffle(deck);
 
         // Create players
@@ -55,7 +58,10 @@ public class ParadeGame {
             System.out.println("-----------------------------------------------------------------------------------------------------");
             printGameState();
             System.out.println("-----------------------------------------------------------------------------------------------------");
-    
+            
+            // Display the number of cards left in the deck
+            System.out.println("Cards left in the deck: " + deck.size());
+
             System.out.println(currentPlayer.getName() + ", your turn!");
     
             // Display player's hand
@@ -88,8 +94,6 @@ public class ParadeGame {
             // Remove cards from the parade if necessary (based on the played card)
             handleCardRemoval(playedCard, currentPlayer);
     
-            // // Display the current state of the parade
-            // System.out.println("Current Parade: " + parade);
     
             // Draw a new card from the deck if available
             if (!deck.isEmpty()) {
@@ -109,14 +113,58 @@ public class ParadeGame {
     }
 
     private boolean isGameOver() {
-        for (Player player : players) {
-            if (player.getCollectedCards().size() >= 6) {
-                System.out.println(player.getName() + " has collected all colors! Last round starts.");
+        if (lastRoundTriggered) {
+            lastRoundTurnsTaken++;
+    
+            if (lastRoundTurnsTaken >= players.size()) {
+                System.out.println("Final round is completed. Game Over!");
                 return true;
             }
+            return false;  // Continue last round
         }
-
-        return deck.isEmpty();
+    
+        for (Player player : players) {
+            if (hasCollectedAllColors(player)) {
+                System.out.println(player.getName() + " has collected all six colors! Last round begins.");
+                lastRoundTriggered = true;
+                lastRoundTurnsTaken = 0; // Reset counter for final turns
+                return false;
+            }
+        }
+    
+        if (deck.isEmpty() && !lastRoundTriggered) {
+            System.out.println("Deck is empty! Last round begins.");
+            lastRoundTriggered = true;
+            lastRoundTurnsTaken = 0; // Reset counter for final turns
+            return false;
+        }
+    
+        return false; 
+    }
+    
+    
+    // Check if a player has collected at least one card of each color
+    private boolean hasCollectedAllColors(Player player) {
+        boolean[] colorsPresent = new boolean[6];  // Array to track colors (Red, Blue, Yellow, Green, Purple, Orange)
+        
+        for (Card card : player.getCollectedCards()) {
+            switch (card.getColour()) {
+                case "Red": colorsPresent[0] = true; break;
+                case "Blue": colorsPresent[1] = true; break;
+                case "Yellow": colorsPresent[2] = true; break;
+                case "Green": colorsPresent[3] = true; break;
+                case "Purple": colorsPresent[4] = true; break;
+                case "Orange": colorsPresent[5] = true; break;
+            }
+        }
+    
+        // Check if all colors are collected
+        for (boolean color : colorsPresent) {
+            if (!color) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void handleCardRemoval(Card playedCard, Player currentPlayer) {
