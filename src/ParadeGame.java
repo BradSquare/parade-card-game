@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Scanner;
 
 public class ParadeGame {
@@ -10,7 +11,7 @@ public class ParadeGame {
     private boolean lastRoundTriggered = false;
     private int lastRoundTurnsTaken = 0;     
 
-    public ParadeGame(int numPlayers) {
+    public ParadeGame(int numPlayers, int numComputers) {
         deck = new ArrayList<>();
         players = new ArrayList<>();
         parade = new ArrayList<>();
@@ -25,12 +26,18 @@ public class ParadeGame {
 
         Collections.shuffle(deck);
 
-        // Create players
+        // Create players and computers
+        int creationIndex = 1;
         for (int i = 0; i < numPlayers; i++) {
-            players.add(new Player("Player " + (i + 1)));
+            players.add(new Player("Player " + (creationIndex)));
+            creationIndex++;
+        }
+        for (int i = 0; i < numComputers; i++) {
+            players.add(new Computer("(Computer) Player " + (creationIndex)));
+            creationIndex++;
         }
 
-        // Deal cards to players
+        // Deal cards to players and computers.
         dealCards();
 
         // Set up the initial parade (6 cards)
@@ -71,17 +78,22 @@ public class ParadeGame {
             }
     
             int cardIndex;
-            while (true) {  // Keep asking for input until a valid one is given
-                System.out.print("Choose a card index to play: ");
-                if (scanner.hasNextInt()) {
-                    cardIndex = scanner.nextInt();
-                    if (cardIndex >= 0 && cardIndex < currentPlayer.getHandSize()) {
-                        break;  // Exit loop when a valid index is provided
+            if (currentPlayer instanceof Computer) { // currentPlayer is a computer.
+                cardIndex = getRandomInt(currentPlayer.getHandSize() - 1); // Random number from 0 to handsize - 1.
+            } else { // currentPlayer is an actual person playing.
+                while (true) {  // Keep asking for input until a valid one is given
+                    System.out.print("Choose a card index to play: ");
+                    if (scanner.hasNextInt()) {
+                        cardIndex = scanner.nextInt();
+                        if (cardIndex >= 0 && cardIndex < currentPlayer.getHandSize()) {
+                            break;  // Exit loop when a valid index is provided
+                        }
+                    } else {
+                        scanner.next();  // Clear invalid input
                     }
-                } else {
-                    scanner.next();  // Clear invalid input
+                    System.out.println("Invalid choice! Please enter a valid card index.");
                 }
-                System.out.println("Invalid choice! Please enter a valid card index.");
+    
             }
 
             // Play the chosen card
@@ -94,7 +106,6 @@ public class ParadeGame {
             // Remove cards from the parade if necessary (based on the played card)
             handleCardRemoval(playedCard, currentPlayer);
     
-    
             // Draw a new card from the deck if available
             if (!deck.isEmpty()) {
                 currentPlayer.addCardToHand(deck.remove(0));
@@ -105,6 +116,7 @@ public class ParadeGame {
     
             // Move to the next player
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+            
         }
         
         // End the game and show results
@@ -144,6 +156,12 @@ public class ParadeGame {
         }
     
         return false; 
+    }
+
+    // Generate a random int for computer's turn.
+    public static int getRandomInt(int max) {
+        Random random = new Random();
+        return random.nextInt(max + 1); // Generates number from 0 to max (inclusive)
     }
     
     
