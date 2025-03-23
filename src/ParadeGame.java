@@ -254,16 +254,22 @@ public class ParadeGame {
 
             // Choose the 1st card to discard
             int cardIndex1 = -1;
-            while (cardIndex1 < 0 || cardIndex1 >= player.getHandSize()) {
-                System.out.print("Choose 1st card to discard:");
-                if (scanner.hasNextInt()) {
-                    cardIndex1 = scanner.nextInt();
-                        if (cardIndex1 < 0 || cardIndex1 >= player.getHandSize()) {
-                            System.out.println("Invalid index! Please choose a valid index.");
-                        }
-                } else {
-                    scanner.next();  // Clear the invalid input
-                    System.out.println("Invalid input! Please enter a valid number.");
+            if (player instanceof Computer) { // if player is a computer, randomly pick card to discard
+                cardIndex1 = getRandomInt(player.getHandSize() - 1); // random int from 0 to handsize - 1.
+                System.out.println("Choose 1st card to discard: " + cardIndex1);
+
+            } else { // player is an actual human playing. 
+                while (cardIndex1 < 0 || cardIndex1 >= player.getHandSize()) {
+                    System.out.print("Choose 1st card to discard: ");
+                    if (scanner.hasNextInt()) {
+                        cardIndex1 = scanner.nextInt();
+                            if (cardIndex1 < 0 || cardIndex1 >= player.getHandSize()) {
+                                System.out.println("Invalid index! Please choose a valid index.");
+                            }
+                    } else {
+                        scanner.next();  // Clear the invalid input
+                        System.out.println("Invalid input! Please enter a valid number.");
+                    }
                 }
             }
 
@@ -281,18 +287,23 @@ public class ParadeGame {
 
             // Choose the 2nd card to discard
             int cardIndex2 = -1;
-            while (cardIndex2 < 0 || cardIndex2 >= player.getHandSize()) {
-                System.out.print("Choose 2nd card to discard:");
-                if (scanner.hasNextInt()) {
-                    cardIndex2 = scanner.nextInt();
-                    if (cardIndex2 < 0 || cardIndex2 >= player.getHandSize()) {
-                        System.out.println("Invalid index! Please choose a valid index.");
+            if (player instanceof Computer) {
+                cardIndex2 = getRandomInt(player.getHandSize() - 1); // random int from 0 to handsize - 1.
+                System.out.println("Choose 2nd card to discard: " + cardIndex2);
+            } else {
+                while (cardIndex2 < 0 || cardIndex2 >= player.getHandSize()) {
+                    System.out.print("Choose 2nd card to discard: ");
+                    if (scanner.hasNextInt()) {
+                        cardIndex2 = scanner.nextInt();
+                        if (cardIndex2 < 0 || cardIndex2 >= player.getHandSize()) {
+                            System.out.println("Invalid index! Please choose a valid index.");
+                        }
+                    } else {
+                        scanner.next();  // Clear the invalid input
+                        System.out.println("Invalid input! Please enter a valid number.");
                     }
-                } else {
-                    scanner.next();  // Clear the invalid input
-                    System.out.println("Invalid input! Please enter a valid number.");
                 }
-            }
+            }            
 
             // Discard the 2nd card
             Card discardedCard2 = player.getHand().get(cardIndex2);
