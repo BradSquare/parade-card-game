@@ -36,8 +36,8 @@ public class Computer extends Player {
     }
 
     // Calculate the player's score by summing the values of all collected cards
-    public int calculateScore() {
-        return super.calculateScore();
+    public int calculateScore(ArrayList<Player> allPlayers) {
+        return super.calculateScore(allPlayers);
     }
 
     @Override

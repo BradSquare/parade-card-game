@@ -322,7 +322,7 @@ public class ParadeGame {
 
         for (Player player : players) {
             // Calculate score: sum of values of all collected cards + majority points
-            int score = player.calculateScore();
+            int score = player.calculateScore(players);
     
             // Count majority points per color
             score += calculateMajorityPoints(player);
@@ -374,16 +374,26 @@ public class ParadeGame {
 
     private Player determineWinner() {
         Player winner = players.get(0);
-        int lowestScore = winner.calculateScore();
-
-        for (Player player : players) {
-            int score = player.calculateScore();
+        int lowestScore = winner.calculateScore(players);
+        int fewestCards = winner.getCollectedCards().size();
+    
+        for (int i = 1; i < players.size(); i++) {
+            Player player = players.get(i);
+            int score = player.calculateScore(players);
+            int cardCount = player.getCollectedCards().size();
+    
             if (score < lowestScore) {
                 winner = player;
                 lowestScore = score;
+                fewestCards = cardCount;
+            } else if (score == lowestScore) {
+                if (cardCount < fewestCards) {
+                    winner = player;
+                    fewestCards = cardCount;
+                }
             }
         }
-
+    
         return winner;
     }
 }

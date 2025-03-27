@@ -42,12 +42,59 @@ public class Player {
         collectedCards.add(card);
     }
 
-    // Calculate the player's score by summing the values of all collected cards
-    public int calculateScore() {
-        int score = 0;
-        for (Card card : collectedCards) {
-            score += card.getValue();
+    private void updateColorCount(int[] colorCount, Card card) {
+        int index = getColorIndex(card.getColour());
+        if (index != -1) {
+            colorCount[index]++;
         }
+    }
+    
+    private int getColorIndex(String color) {
+        switch (color) {
+            case "Red": return 0;
+            case "Blue": return 1;
+            case "Yellow": return 2;
+            case "Green": return 3;
+            case "Purple": return 4;
+            case "Orange": return 5;
+            default: return -1;
+        }
+    }
+
+    // Calculate the player's score by summing the values of all collected cards
+    public int calculateScore(ArrayList<Player> allPlayers) {
+        int score = 0;
+    
+        // Count this player's cards by color
+        int[] playerColorCount = new int[6];
+        for (Card card : collectedCards) {
+            updateColorCount(playerColorCount, card);
+        }
+    
+        // Determine the max color count per color among all players
+        int[] maxColorCount = new int[6];
+        for (Player p : allPlayers) {
+            int[] colorCount = new int[6];
+            for (Card c : p.getCollectedCards()) {
+                updateColorCount(colorCount, c);
+            }
+            for (int i = 0; i < 6; i++) {
+                maxColorCount[i] = Math.max(maxColorCount[i], colorCount[i]);
+            }
+        }
+    
+        // Calculate score based on majority rules
+        for (Card card : collectedCards) {
+            int colorIndex = getColorIndex(card.getColour());
+            if (colorIndex != -1 && playerColorCount[colorIndex] == maxColorCount[colorIndex] && playerColorCount[colorIndex] > 0) {
+                // This player has majority in this color → card counts as 1 point
+                score += 1;
+            } else {
+                // No majority → use printed value
+                score += card.getValue();
+            }
+        }
+    
         return score;
     }
 
