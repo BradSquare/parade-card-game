@@ -324,8 +324,6 @@ public class ParadeGame {
             // Calculate score: sum of values of all collected cards + majority points
             int score = player.calculateScore(players);
     
-            // Count majority points per color
-            score += calculateMajorityPoints(player);
     
             System.out.println(player.getName() + " Score: " + score);
         }
@@ -334,8 +332,6 @@ public class ParadeGame {
         Player winner = determineWinner();
         System.out.println("\nThe winner is: " + winner.getName());
     }
-
-    
 
     private Player determineWinner() {
         Player winner = players.get(0);
