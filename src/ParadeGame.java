@@ -335,42 +335,7 @@ public class ParadeGame {
         System.out.println("\nThe winner is: " + winner.getName());
     }
 
-    private int calculateMajorityPoints(Player player) {
-        int majorityPoints = 0;
-        ArrayList<Card> collectedCards = player.getCollectedCards();
-        int[] colorCount = new int[6];
-
-        for (Card card : collectedCards) {
-            switch (card.getColour()) {
-                case "Red":
-                    colorCount[0]++;
-                    break;
-                case "Blue":
-                    colorCount[1]++;
-                    break;
-                case "Yellow":
-                    colorCount[2]++;
-                    break;
-                case "Green":
-                    colorCount[3]++;
-                    break;
-                case "Purple":
-                    colorCount[4]++;
-                    break;
-                case "Orange":
-                    colorCount[5]++;
-                    break;
-            }
-        }
-
-        for (int count : colorCount) {
-            if (count > 1) {
-                majorityPoints += count;
-            }
-        }
-
-        return majorityPoints;
-    }
+    
 
     private Player determineWinner() {
         Player winner = players.get(0);
