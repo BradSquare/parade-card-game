@@ -11,19 +11,21 @@ public class ParadeGame {
     private boolean lastRoundTriggered = false;
     private int lastRoundTurnsTaken = 0;     
 
+    // initial game setup
     public ParadeGame(int numPlayers, int numComputers, int computerDifficulty) {
         deck = new ArrayList<>();
         players = new ArrayList<>();
         parade = new ArrayList<>();
         currentPlayerIndex = 0;
 
-        // Create deck of cards
+        // Create deck of cards, 6 colours * 11 numbers
         for (int value = 0; value <= 10; value++) {
             for (String color : new String[]{"Red", "Blue", "Yellow", "Green", "Purple", "Orange"}) {
                 deck.add(new Card(value, color));
             }
         }
 
+        // randomise cards in the initialised deck
         Collections.shuffle(deck);
 
         // Create players and computers
@@ -43,18 +45,20 @@ public class ParadeGame {
 
         // Set up the initial parade (6 cards)
         for (int i = 0; i < 6; i++) {
-            parade.add(deck.remove(0));
+            parade.add(deck.remove(0)); // remove the top card from the deck and add it to the parade
         }
     }
 
+    // deal 5 cards to all the players
     private void dealCards() {
         for (Player player : players) {
             for (int i = 0; i < 5; i++) {
-                player.addCardToHand(deck.remove(0));
+                player.addCardToHand(deck.remove(0)); // remove the top card from the deck and add it to the player's hand
             }
         }
     }
 
+    // gameplay
     public void startGame() {
         Scanner scanner = new Scanner(System.in);
     
