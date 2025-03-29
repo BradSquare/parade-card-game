@@ -29,8 +29,30 @@ public class Main {
             }
             System.out.println("Game only supports 2-6 players.");
         }
+
+        int computerDifficulty = 0;
+        // Prompt for difficulty if there are computers
+        if (numComputers > 0) {
+            while (true) {
+                System.out.println("\nComputer Difficulty:");
+                System.out.println("1. Easy");
+                System.out.println("2. Medium");
+                System.out.println("3. Hard");
+                System.out.print("Select difficulty (1-3): ");
+
+                if (scanner.hasNextInt()) {
+                    computerDifficulty = scanner.nextInt();
+                    if (computerDifficulty >= 1 && computerDifficulty <= 3) {
+                        break;
+                    }
+                } else {
+                    scanner.next(); // Clear invalid input
+                }
+                System.out.println("Invalid selection. Please enter 1, 2, or 3.");
+            }
+        }
         
-        ParadeGame game = new ParadeGame(numPlayers, numComputers);
+        ParadeGame game = new ParadeGame(numPlayers, numComputers, computerDifficulty);
         game.startGame(); 
 
         scanner.close();

@@ -11,7 +11,7 @@ public class ParadeGame {
     private boolean lastRoundTriggered = false;
     private int lastRoundTurnsTaken = 0;     
 
-    public ParadeGame(int numPlayers, int numComputers) {
+    public ParadeGame(int numPlayers, int numComputers, int computerDifficulty) {
         deck = new ArrayList<>();
         players = new ArrayList<>();
         parade = new ArrayList<>();
@@ -33,7 +33,8 @@ public class ParadeGame {
             creationIndex++;
         }
         for (int i = 0; i < numComputers; i++) {
-            players.add(new Computer("(Computer) Player " + (creationIndex)));
+            Computer computer = new Computer("Computer " + (creationIndex), computerDifficulty);
+            players.add(computer);
             creationIndex++;
         }
 
@@ -78,8 +79,10 @@ public class ParadeGame {
             }
     
             int cardIndex;
+            Card playedCard;
             if (currentPlayer instanceof Computer) { // currentPlayer is a computer.
-                cardIndex = getRandomInt(currentPlayer.getHandSize() - 1); // Random number from 0 to handsize - 1.
+                Computer computer = (Computer) currentPlayer;
+                playedCard = computer.playCard(parade);
             } else { // currentPlayer is an actual person playing.
                 while (true) {  // Keep asking for input until a valid one is given
                     System.out.print("Choose a card index to play: ");
@@ -93,11 +96,11 @@ public class ParadeGame {
                     }
                     System.out.println("Invalid choice! Please enter a valid card index.");
                 }
+
+                playedCard = currentPlayer.playCard(cardIndex);
     
             }
 
-            // Play the chosen card
-            Card playedCard = currentPlayer.playCard(cardIndex);
             System.out.println(currentPlayer.getName() + " played: " + playedCard);
     
             // Add the card to the parade

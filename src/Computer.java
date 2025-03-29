@@ -1,10 +1,14 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 // Imported from Player.java
 public class Computer extends Player {
+    private int difficulty;
+    private Random random;
 
-    public Computer(String name) {
+    public Computer(String name, int difficulty) {
         super(name);
+        this.difficulty = difficulty;
     }
 
     public String getName() {
@@ -23,8 +27,78 @@ public class Computer extends Player {
         super.addCardToHand(card);
     }
 
-    public Card playCard(int index) {
+    // public Card playCard(int index) {
+    //     return super.playCard(index);
+    // }
+
+    public Card playCard(ArrayList<Card> parade) {
+        switch (difficulty) {
+            case 1:
+                return playEasy();
+            case 2:
+                return playMedium(parade);
+            case 3:
+                return playHard(parade);
+            default:
+                return playEasy();
+        }
+    }
+
+    private Card playEasy() {
+        int index = random.nextInt(getHandSize()); // Pick a random card
         return super.playCard(index);
+    }
+
+    private Card playMedium(ArrayList<Card> parade) {
+        ArrayList<Card> hand = getHand();
+        Card bestCard = hand.get(0);
+        int minRemoval = Integer.MAX_VALUE;
+
+        for (Card card : hand) {
+            int removed = simulateCardEffect(card, parade);
+            if (removed < minRemoval) {
+                minRemoval = removed;
+                bestCard = card;
+            }
+        }
+        return super.playCard(hand.indexOf(bestCard));
+    }
+
+    private Card playHard(ArrayList<Card> parade) {
+        ArrayList<Card> hand = getHand();
+        Card bestCard = hand.get(0);
+        int minPenalty = Integer.MAX_VALUE;
+
+        for (Card card : hand) {
+            int penalty = simulatePenalty(card, parade);
+            if (penalty < minPenalty) {
+                minPenalty = penalty;
+                bestCard = card;
+            }
+        }
+        return super.playCard(hand.indexOf(bestCard));
+    }
+
+    private int simulateCardEffect(Card card, ArrayList<Card> parade) {
+        // Simulate how many cards will be removed when this card is played
+        int count = 0;
+        for (Card c : parade) {
+            if (c.getColour() == card.getColour() || c.getValue() <= card.getValue()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private int simulatePenalty(Card card, ArrayList<Card> parade) {
+        // Simulate the penalty incurred by playing this card
+        int penalty = 0;
+        for (Card c : parade) {
+            if (c.getColour() == card.getColour() || c.getValue() <= card.getValue()) {
+                penalty += c.getValue(); // Example penalty calculation
+            }
+        }
+        return penalty;
     }
 
     public ArrayList<Card> getCollectedCards() {
