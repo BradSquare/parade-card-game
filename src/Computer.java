@@ -44,11 +44,13 @@ public class Computer extends Player {
         }
     }
 
+    // Plays a random card
     private Card playEasy() {
         int index = random.nextInt(getHandSize()); // Pick a random card
         return super.playCard(index);
     }
 
+    // Plays a card that will remove the least number of cards
     private Card playMedium(ArrayList<Card> parade) {
         ArrayList<Card> hand = getHand();
         Card bestCard = hand.get(0);
@@ -64,6 +66,7 @@ public class Computer extends Player {
         return super.playCard(hand.indexOf(bestCard));
     }
 
+    // Plays the card that removes cards that adds the least value
     private Card playHard(ArrayList<Card> parade) {
         ArrayList<Card> hand = getHand();
         Card bestCard = hand.get(0);
@@ -79,8 +82,8 @@ public class Computer extends Player {
         return super.playCard(hand.indexOf(bestCard));
     }
 
+    // Simulate how many cards will be removed when this card is played
     private int simulateCardEffect(Card card, ArrayList<Card> parade) {
-        // Simulate how many cards will be removed when this card is played
         int count = 0;
         for (Card c : parade) {
             if (c.getColour() == card.getColour() || c.getValue() <= card.getValue()) {
@@ -90,8 +93,8 @@ public class Computer extends Player {
         return count;
     }
 
+    // Simulate the penalty incurred by playing this card
     private int simulatePenalty(Card card, ArrayList<Card> parade) {
-        // Simulate the penalty incurred by playing this card
         int penalty = 0;
         for (Card c : parade) {
             if (c.getColour() == card.getColour() || c.getValue() <= card.getValue()) {
