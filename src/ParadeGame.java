@@ -330,8 +330,7 @@ public class ParadeGame {
         for (Player player : players) {
             // Calculate score: sum of values of all collected cards + majority points
             int score = player.calculateScore(players);
-    
-    
+            System.out.println(player.getName() + "'s Final Collected Cards: " + player.getCollectedCards());
             System.out.println(player.getName() + " Score: " + score);
         }
     
