@@ -85,9 +85,11 @@ public class Computer extends Player {
     // Simulate how many cards will be removed when this card is played
     private int simulateCardEffect(Card card, ArrayList<Card> parade) {
         int count = 0;
-        for (Card c : parade) {
-            if (c.getColour().equals(card.getColour()) || c.getValue() <= card.getValue()) {
-                count++;
+        for (int i = parade.size() - 2; i >= 0; i--) {
+            if (i < parade.size() - 1 - card.getValue()) {
+                if (parade.get(i).getColour().equals(card.getColour()) || parade.get(i).getValue() <= card.getValue()) {
+                    count++;
+                }
             }
         }
         return count;
@@ -96,9 +98,11 @@ public class Computer extends Player {
     // Simulate the penalty incurred by playing this card
     private int simulatePenalty(Card card, ArrayList<Card> parade) {
         int penalty = 0;
-        for (Card c : parade) {
-            if (c.getColour().equals(card.getColour()) || c.getValue() <= card.getValue()) {
-                penalty += c.getValue(); // Example penalty calculation
+        for (int i = parade.size() - 2; i >= 0; i--) {
+            if (i < parade.size() - 1 - card.getValue()) {
+                if (parade.get(i).getColour().equals(card.getColour()) || parade.get(i).getValue() <= card.getValue()) {
+                    penalty += parade.get(i).getValue();
+                }
             }
         }
         return penalty;
