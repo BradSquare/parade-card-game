@@ -86,7 +86,7 @@ public class Computer extends Player {
     private int simulateCardEffect(Card card, ArrayList<Card> parade) {
         int count = 0;
         for (Card c : parade) {
-            if (c.getColour() == card.getColour() || c.getValue() <= card.getValue()) {
+            if (c.getColour().equals(card.getColour()) || c.getValue() <= card.getValue()) {
                 count++;
             }
         }
@@ -97,7 +97,7 @@ public class Computer extends Player {
     private int simulatePenalty(Card card, ArrayList<Card> parade) {
         int penalty = 0;
         for (Card c : parade) {
-            if (c.getColour() == card.getColour() || c.getValue() <= card.getValue()) {
+            if (c.getColour().equals(card.getColour()) || c.getValue() <= card.getValue()) {
                 penalty += c.getValue(); // Example penalty calculation
             }
         }
