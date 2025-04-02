@@ -262,9 +262,9 @@ public class ParadeGame {
             // Choose the 1st card to discard
             int cardIndex1 = -1;
             if (player instanceof Computer) { // if player is a computer, randomly pick card to discard
-                cardIndex1 = getRandomInt(player.getHandSize() - 1); // random int from 0 to handsize - 1.
+                Computer computer = (Computer) player;
+                cardIndex1 = computer.discardCard(parade, players);
                 System.out.println("Choose 1st card to discard: " + cardIndex1);
-
             } else { // player is an actual human playing. 
                 while (cardIndex1 < 0 || cardIndex1 >= player.getHandSize()) {
                     System.out.print("Choose 1st card to discard: ");
@@ -295,7 +295,8 @@ public class ParadeGame {
             // Choose the 2nd card to discard
             int cardIndex2 = -1;
             if (player instanceof Computer) {
-                cardIndex2 = getRandomInt(player.getHandSize() - 1); // random int from 0 to handsize - 1.
+                Computer computer = (Computer) player;
+                cardIndex2 = computer.discardCard(parade, players);
                 System.out.println("Choose 2nd card to discard: " + cardIndex2);
             } else {
                 while (cardIndex2 < 0 || cardIndex2 >= player.getHandSize()) {

@@ -27,6 +27,10 @@ public class Computer extends Player {
         super.addCardToHand(card);
     }
 
+    public int getDifficulty() {
+        return difficulty;
+    }
+
     // public Card playCard(int index) {
     //     return super.playCard(index);
     // }
@@ -106,6 +110,49 @@ public class Computer extends Player {
             }
         }
         return penalty;
+    }
+
+    public static int getRandomInt(int max) {
+        Random random = new Random();
+        return random.nextInt(max + 1); // Generates number from 0 to max (inclusive)
+    }
+
+    public int discardCard(ArrayList<Card> parade, ArrayList<Player> players) {
+        int cardIndex = -1;
+        switch (difficulty) {
+            case 1:
+                cardIndex = getRandomInt(getHandSize() - 1); // random int from 0 to handsize - 1.
+                break;
+            case 2:
+                int max = 0;
+                int cardIndexMedium = 0; 
+                for (Card c : getHand()) {
+                    int value = c.getValue();
+                    if (value >= max) {
+                        max = value;
+                        cardIndex = cardIndexMedium;
+                    }
+                    cardIndexMedium++;
+                }
+                break;
+            case 3:
+                int minPoints = Integer.MAX_VALUE;
+                int cardIndexHard = 0;
+                for (Card c : getHand()) {
+                    ArrayList<Card> temp = getCollectedCards();
+                    temp.add(c);
+                    int score = calculateScore(players);
+                    if (score < minPoints) {
+                        minPoints = score;
+                        cardIndex = cardIndexHard;
+                    }
+                    cardIndexHard++;
+                }
+                break;
+            default:
+                cardIndex = getRandomInt(getHandSize() - 1);
+        }
+        return cardIndex;
     }
 
     public ArrayList<Card> getCollectedCards() {
