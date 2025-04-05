@@ -9,7 +9,8 @@ public class ParadeGame {
     private ArrayList<Card> parade;
     private int currentPlayerIndex;
     private boolean lastRoundTriggered = false;
-    private int lastRoundTurnsTaken = 0;     
+    private int lastRoundTurnsTaken = 0;
+    private Scanner scanner;
 
     // Initial game setup
     public ParadeGame(int numPlayers, int numComputers, int computerDifficulty) {
@@ -29,11 +30,26 @@ public class ParadeGame {
         Collections.shuffle(deck);
 
         // Create players and computers
-        int creationIndex = 1;
-        for (int i = 0; i < numPlayers; i++) {
-            players.add(new Player("Player " + (creationIndex)));
-            creationIndex++;
+        // Get human player names
+        this.scanner = new Scanner(System.in);
+        ArrayList<String> playerNames = new ArrayList<>();
+        for (int i = 1; i <= numPlayers; i++) {
+            System.out.print("Enter name for Player " + i + ": ");
+            String name = scanner.nextLine().trim();
+            while (name.isEmpty()) {
+                System.out.println("Name cannot be empty!");
+                System.out.print("Enter name for Player " + i + ": ");
+                name = scanner.nextLine().trim();
+            }
+            playerNames.add(name);
         }
+
+        // Create human players
+        for (String name : playerNames) {
+            players.add(new Player(name));
+        }
+
+        int creationIndex = 1;
         for (int i = 0; i < numComputers; i++) {
             Computer computer = new Computer("Computer " + (creationIndex), computerDifficulty);
             players.add(computer);
@@ -47,6 +63,9 @@ public class ParadeGame {
         for (int i = 0; i < 6; i++) {
             parade.add(deck.remove(0)); // remove the top card from the deck and add it to the parade
         }
+
+        // Set random starting player (using existing helper method)
+        currentPlayerIndex = getRandomInt(players.size() - 1);
     }
 
     // Deal 5 cards to all the players
@@ -60,7 +79,6 @@ public class ParadeGame {
 
     // Gameplay
     public void startGame() {
-        Scanner scanner = new Scanner(System.in);
     
         // Game loop
         while (!isGameOver()) {
@@ -130,7 +148,7 @@ public class ParadeGame {
         System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
         endGame();
         System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
-        scanner.close();
+
     }
 
     private boolean isGameOver() {
@@ -247,9 +265,6 @@ public class ParadeGame {
     private void endGame() {
         System.out.println("Game Over!");
         
-        // Initialize the Scanner object (only once for the entire loop)
-        Scanner scanner = new Scanner(System.in);
-
         // Display each player's collected cards
         for (Player player : players) {
             System.out.println(player.getName() + "'s Collected Cards: " + player.getCollectedCards());
@@ -326,8 +341,6 @@ public class ParadeGame {
     
         }
 
-        scanner.close();
-
         for (Player player : players) {
             // Calculate score: sum of values of all collected cards + majority points
             int score = player.calculateScore(players);
@@ -338,6 +351,10 @@ public class ParadeGame {
         // Determine the winner (player with the lowest score)
         Player winner = determineWinner();
         System.out.println("\nThe winner is: " + winner.getName());
+
+        if (scanner != null) {
+            scanner.close();
+        }
     }
 
     private Player determineWinner() {
