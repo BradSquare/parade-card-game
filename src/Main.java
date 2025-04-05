@@ -13,7 +13,7 @@ public class Main {
             System.out.println("Select Game Mode:");
             System.out.println("1. Human vs Computer(s)");
             System.out.println("2. Human vs Human(s)");
-            System.out.print("Select 1 or 2:");
+            System.out.print("Select 1 or 2: ");
 
             if (scanner.hasNextInt()) {
                 int gameMode = scanner.nextInt();
