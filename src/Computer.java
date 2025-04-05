@@ -50,6 +50,7 @@ public class Computer extends Player {
 
     // Plays a random card
     private Card playEasy() {
+        Random random = new Random();
         int index = random.nextInt(getHandSize()); // Pick a random card
         return super.playCard(index);
     }
