@@ -53,7 +53,7 @@ public class Player {
         switch (color) {
             case "Red": return 0;
             case "Blue": return 1;
-            case "Yellow": return 2;
+            case "Grey": return 2;
             case "Green": return 3;
             case "Purple": return 4;
             case "Orange": return 5;

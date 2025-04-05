@@ -21,7 +21,7 @@ public class ParadeGame {
 
         // Create deck of cards, 6 colours * 11 numbers
         for (int value = 0; value <= 10; value++) {
-            for (String color : new String[]{"Red", "Blue", "Yellow", "Green", "Purple", "Orange"}) {
+            for (String color : new String[]{"Red", "Blue", "Grey", "Green", "Purple", "Orange"}) {
                 deck.add(new Card(value, color));
             }
         }
@@ -192,13 +192,13 @@ public class ParadeGame {
     
     // Check if a player has collected at least one card of each color
     private boolean hasCollectedAllColors(Player player) {
-        boolean[] colorsPresent = new boolean[6];  // Array to track colors (Red, Blue, Yellow, Green, Purple, Orange)
+        boolean[] colorsPresent = new boolean[6];  // Array to track colors (Red, Blue, Grey, Green, Purple, Orange)
         
         for (Card card : player.getCollectedCards()) {
             switch (card.getColour()) {
                 case "Red": colorsPresent[0] = true; break;
                 case "Blue": colorsPresent[1] = true; break;
-                case "Yellow": colorsPresent[2] = true; break;
+                case "Grey": colorsPresent[2] = true; break;
                 case "Green": colorsPresent[3] = true; break;
                 case "Purple": colorsPresent[4] = true; break;
                 case "Orange": colorsPresent[5] = true; break;
