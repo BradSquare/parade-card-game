@@ -4,7 +4,6 @@ import java.util.Random;
 // Imported from Player.java
 public class Computer extends Player {
     private int difficulty;
-    private Random random;
 
     public Computer(String name, int difficulty) {
         super(name);
