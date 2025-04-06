@@ -19,7 +19,6 @@ public class CardDisplayUtil {
             int end = Math.min(start + cardsPerRow, totalCards);
             ArrayList<Card> row = new ArrayList<>(cards.subList(start, end));
             displayRow(row);
-            System.out.println();
         }
     }
 

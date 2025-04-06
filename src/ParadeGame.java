@@ -93,6 +93,7 @@ public class ParadeGame {
             System.out.println("Cards left in the deck: " + deck.size());
 
             System.out.println(currentPlayer.getName() + ", your turn!");
+            System.out.println();
     
             // Display player's hand
             System.out.println("Your Hand:");
@@ -118,15 +119,14 @@ public class ParadeGame {
                     }
                     System.out.println("Invalid choice! Please enter a valid card index.");
                 }
-
+                System.out.println();
+                
                 playedCard = currentPlayer.playCard(cardIndex);
     
             }
 
             System.out.println(currentPlayer.getName() + " played:");
-            ArrayList<Card> card = new ArrayList<Card>();
-            card.add(playedCard);
-            CardDisplayUtil.displayCards(card);
+            displaySingleCard(playedCard);
     
             // Add the card to the parade
             parade.add(playedCard);
@@ -287,15 +287,21 @@ public class ParadeGame {
         }
         CardDisplayUtil.displayCards(currentPlayer.getCollectedCards());
     }
+
+    // Visually display a single card
+    public void displaySingleCard(Card card) {
+        ArrayList<Card> cardAsList = new ArrayList<Card>();
+        cardAsList.add(card);
+        CardDisplayUtil.displayCards(cardAsList);
+    }
     
-    private void endGame() {
-        System.out.println("Game Over!");
-        
+    private void endGame() {        
         // Display each player's collected cards
         for (Player player : players) {
-            System.out.println(player.getName() + "'s Collected Cards: " + player.getCollectedCards());
+            displayCollectedCards(player);
 
             // Display the player's hand
+            displayHand(player);
             for (int i = 0; i < player.getHandSize(); i++) {
                 System.out.println(i + ": " + player.getHand().get(i));
             }
@@ -306,6 +312,7 @@ public class ParadeGame {
                 Computer computer = (Computer) player;
                 cardIndex1 = computer.discardCard(parade, players);
                 System.out.println("Choose 1st card to discard: " + cardIndex1);
+                System.out.println();
             } else { // player is an actual human playing. 
                 while (cardIndex1 < 0 || cardIndex1 >= player.getHandSize()) {
                     System.out.print("Choose 1st card to discard: ");
@@ -319,16 +326,21 @@ public class ParadeGame {
                         System.out.println("Invalid input! Please enter a valid number.");
                     }
                 }
+                System.out.println();
             }
 
             // Discard the 1st card
             Card discardedCard1 = player.getHand().get(cardIndex1);
             player.getHand().remove(discardedCard1);
+            System.out.println(player.getName() + " discarded:");
+            displaySingleCard(discardedCard1);
+
 
             System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
 
             // Display the updated hand
-            System.out.println("Updated hand after discarding the 1st card:");
+            System.out.print("After discarding the 1st card, ");
+            displayHand(player);
             for (int i = 0; i < player.getHandSize(); i++) {
                 System.out.println(i + ": " + player.getHand().get(i));
             }
@@ -339,6 +351,7 @@ public class ParadeGame {
                 Computer computer = (Computer) player;
                 cardIndex2 = computer.discardCard(parade, players);
                 System.out.println("Choose 2nd card to discard: " + cardIndex2);
+                System.out.println();
             } else {
                 while (cardIndex2 < 0 || cardIndex2 >= player.getHandSize()) {
                     System.out.print("Choose 2nd card to discard: ");
@@ -352,11 +365,14 @@ public class ParadeGame {
                         System.out.println("Invalid input! Please enter a valid number.");
                     }
                 }
+                System.out.println();
             }            
 
             // Discard the 2nd card
             Card discardedCard2 = player.getHand().get(cardIndex2);
             player.getHand().remove(discardedCard2);
+            System.out.println(player.getName() + " discarded:");
+            displaySingleCard(discardedCard2);
 
             System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
 
@@ -370,13 +386,15 @@ public class ParadeGame {
         for (Player player : players) {
             // Calculate score: sum of values of all collected cards + majority points
             int score = player.calculateScore(players);
-            System.out.println(player.getName() + "'s Final Collected Cards: " + player.getCollectedCards());
-            System.out.println(player.getName() + " Score: " + score);
+            System.out.print("At the end of the game, ");
+            displayCollectedCards(player);
+            System.out.println(player.getName() + "'s Score: " + score);
+            System.out.println();
         }
     
         // Determine the winner (player with the lowest score)
         Player winner = determineWinner();
-        System.out.println("\nThe winner is: " + winner.getName());
+        System.out.println("The winner is " + winner.getName() + "!");
 
         if (scanner != null) {
             scanner.close();
