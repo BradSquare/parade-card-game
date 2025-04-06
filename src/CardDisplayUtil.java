@@ -12,11 +12,23 @@ public class CardDisplayUtil {
     public static final String ORANGE = "\u001B[38;5;208m"; // Extended ANSI color for orange
 
     public static void displayCards(ArrayList<Card> cards) {
+        int totalCards = cards.size();
+        int cardsPerRow = 8;
+
+        for (int start = 0; start < totalCards; start += cardsPerRow) {
+            int end = Math.min(start + cardsPerRow, totalCards);
+            ArrayList<Card> row = new ArrayList<>(cards.subList(start, end));
+            displayRow(row);
+            System.out.println();
+        }
+    }
+
+    public static void displayRow(ArrayList<Card> row) {
         // List to store the lines for each card
         ArrayList<String[]> cardLinesList = new ArrayList<>();
 
         // Get each card's art and split it into lines
-        for (Card card : cards) {
+        for (Card card : row) {
             String cardArt = getCardArt(card.getColour(), card.getValue());
             String[] lines = cardArt.split("\n");
             cardLinesList.add(lines);
@@ -53,7 +65,7 @@ public class CardDisplayUtil {
         String numStr = String.valueOf(number);
     
         // Card width inside borders is 10 (| + 10 chars + |)
-        int innerWidth = 10;
+        int innerWidth = 8;
     
         // Format number lines
         String spaceNumLeft = numStr + " ".repeat(innerWidth - numStr.length() - 1);
@@ -67,13 +79,13 @@ public class CardDisplayUtil {
         String centeredColour = " ".repeat(paddingLeft) + colour + " ".repeat(paddingRight);
     
         return 
-        colourCode + "+----------+\n" + 
+        colourCode + "+--------+\n" + 
         colourCode + "| " + spaceNumLeft + "|\n" +
-        colourCode + "|          |\n" +
+        colourCode + "|        |\n" +
         colourCode + "|" + centeredColour + "|\n" +
-        colourCode + "|          |\n" +
+        colourCode + "|        |\n" +
         colourCode + "|" + spaceNumRight + " |\n" +
-        colourCode + "+----------+\n" +
+        colourCode + "+--------+\n" +
         RESET;
     }
     
