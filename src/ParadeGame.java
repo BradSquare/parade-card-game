@@ -123,7 +123,10 @@ public class ParadeGame {
     
             }
 
-            System.out.println(currentPlayer.getName() + " played: " + playedCard);
+            System.out.println(currentPlayer.getName() + " played:");
+            ArrayList<Card> card = new ArrayList<Card>();
+            card.add(playedCard);
+            CardDisplayUtil.displayCards(card);
     
             // Add the card to the parade
             parade.add(playedCard);
@@ -137,7 +140,7 @@ public class ParadeGame {
             }
     
             // Display the player's collected cards after they play their turn
-            System.out.println(currentPlayer.getName() + "'s Collected Cards: " + currentPlayer.getCollectedCards());
+            displayCollectedCards(currentPlayer);
     
             // Move to the next player
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
@@ -255,13 +258,36 @@ public class ParadeGame {
     }
     
 
+    // Print the current state of the parade and the player's hands
     private void printGameState() {
-        System.out.println("Current Parade: " + parade);
+        displayParade();
         for (Player player : players) {
-            System.out.println(player);
+            displayHand(player);
         }
     }
 
+    // Visually display the parade
+    public void displayParade() {
+        System.out.println("Current Parade:");
+        CardDisplayUtil.displayCards(parade);
+    }
+
+    // Visually display the player's hand
+    public void displayHand(Player player) {
+        System.out.println(player.getName() + "'s Hand:");
+        CardDisplayUtil.displayCards(player.getHand());
+    }
+
+    // Visually display the collected cards
+    public void displayCollectedCards(Player currentPlayer) {
+        System.out.println(currentPlayer.getName() + "'s Collected Cards: ");
+        if (currentPlayer.getCollectedCards().size() == 0) {
+            System.out.println("No Cards Collected!");
+            return;
+        }
+        CardDisplayUtil.displayCards(currentPlayer.getCollectedCards());
+    }
+    
     private void endGame() {
         System.out.println("Game Over!");
         
