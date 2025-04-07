@@ -21,8 +21,8 @@ public class ParadeGame {
 
         // Create deck of cards, 6 colours * 11 numbers
         for (int value = 0; value <= 10; value++) {
-            for (String color : new String[]{"Red", "Blue", "Grey", "Green", "Purple", "Orange"}) {
-                deck.add(new Card(value, color));
+            for (String colour : new String[]{"Red", "Blue", "Grey", "Green", "Purple", "Orange"}) {
+                deck.add(new Card(value, colour));
             }
         }
 
@@ -166,9 +166,9 @@ public class ParadeGame {
         }
     
         for (Player player : players) {
-            if (hasCollectedAllColors(player)) {
+            if (hasCollectedAllColours(player)) {
                 System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
-                System.out.println(player.getName() + " has collected all six colors! Last round begins.");
+                System.out.println(player.getName() + " has collected all six colours! Last round begins.");
                 lastRoundTriggered = true;
                 lastRoundTurnsTaken = 0; // Reset counter for final turns
                 return false;
@@ -193,24 +193,24 @@ public class ParadeGame {
     }
     
     
-    // Check if a player has collected at least one card of each color
-    private boolean hasCollectedAllColors(Player player) {
-        boolean[] colorsPresent = new boolean[6];  // Array to track colors (Red, Blue, Grey, Green, Purple, Orange)
+    // Check if a player has collected at least one card of each colour
+    private boolean hasCollectedAllColours(Player player) {
+        boolean[] coloursPresent = new boolean[6];  // Array to track colours (Red, Blue, Grey, Green, Purple, Orange)
         
         for (Card card : player.getCollectedCards()) {
             switch (card.getColour()) {
-                case "Red": colorsPresent[0] = true; break;
-                case "Blue": colorsPresent[1] = true; break;
-                case "Grey": colorsPresent[2] = true; break;
-                case "Green": colorsPresent[3] = true; break;
-                case "Purple": colorsPresent[4] = true; break;
-                case "Orange": colorsPresent[5] = true; break;
+                case "Red": coloursPresent[0] = true; break;
+                case "Blue": coloursPresent[1] = true; break;
+                case "Grey": coloursPresent[2] = true; break;
+                case "Green": coloursPresent[3] = true; break;
+                case "Purple": coloursPresent[4] = true; break;
+                case "Orange": coloursPresent[5] = true; break;
             }
         }
     
-        // Check if all colors are collected
-        for (boolean color : colorsPresent) {
-            if (!color) {
+        // Check if all colours are collected
+        for (boolean colour : coloursPresent) {
+            if (!colour) {
                 return false;
             }
         }

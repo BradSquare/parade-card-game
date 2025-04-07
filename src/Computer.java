@@ -30,10 +30,6 @@ public class Computer extends Player {
         return difficulty;
     }
 
-    // public Card playCard(int index) {
-    //     return super.playCard(index);
-    // }
-
     public Card playCard(ArrayList<Card> parade) {
         switch (difficulty) {
             case 1:

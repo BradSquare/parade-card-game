@@ -9,7 +9,7 @@ public class CardDisplayUtil {
     public static final String BLUE = "\u001B[34m";
     public static final String PURPLE = "\u001B[35m";
     public static final String GREY = "\u001B[37m";    // Light grey
-    public static final String ORANGE = "\u001B[38;5;208m"; // Extended ANSI color for orange
+    public static final String ORANGE = "\u001B[38;5;208m"; // Extended ANSI colour for orange
 
     public static void displayCards(ArrayList<Card> cards) {
         int totalCards = cards.size();
@@ -45,7 +45,7 @@ public class CardDisplayUtil {
         }
     }
 
-    // Get color code from color string
+    // Get colour code from colour string
     public static String getColourCode(String colour) {
         return switch (colour.toLowerCase()) {
             case "red" -> RED;
@@ -58,7 +58,7 @@ public class CardDisplayUtil {
         };
     }
 
-    // Return a string of the card in ASCII format with color
+    // Return a string of the card in ASCII format with colour
     public static String getCardArt(String colour, int number) {
         String colourCode = getColourCode(colour);
         String numStr = String.valueOf(number);
