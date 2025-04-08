@@ -84,15 +84,20 @@ public class ParadeGame {
             Player currentPlayer = players.get(currentPlayerIndex);  // Ensure currentPlayer is defined
     
             // Print the game state for the current player
-            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
-            printGameState();
-            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
-            
+            System.out.println("--------------------------------------------------------------------------------------------------------------");
+            displayParade();
             // Display the number of cards left in the deck
             System.out.println("Cards left in the deck: " + deck.size());
-
+            System.out.println("--------------------------------------------------------------------------------------------------------------");
+            
             System.out.println(currentPlayer.getName() + ", your turn!");
             System.out.println();
+            // Display the player's collected cards
+            displayCollectedCards(currentPlayer);
+            System.out.println();
+
+            // Display the player's hand
+            displayHand(currentPlayer);
     
             // Display player's hand
             System.out.println("Your Hand:");
@@ -138,18 +143,15 @@ public class ParadeGame {
                 currentPlayer.addCardToHand(deck.remove(0));
             }
     
-            // Display the player's collected cards after they play their turn
-            displayCollectedCards(currentPlayer);
-    
             // Move to the next player
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
             
         }
         
         // End the game and show results
-        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------------------------------");
         endGame();
-        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------------------------------");
 
     }
 
@@ -158,6 +160,7 @@ public class ParadeGame {
             lastRoundTurnsTaken++;
     
             if (lastRoundTurnsTaken >= players.size()) {
+                System.out.println("--------------------------------------------------------------------------------------------------------------");
                 System.out.println("Final round is completed. Game Over!");
                 return true;
             }
@@ -166,7 +169,7 @@ public class ParadeGame {
     
         for (Player player : players) {
             if (hasCollectedAllColours(player)) {
-                System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("--------------------------------------------------------------------------------------------------------------");
                 System.out.println(player.getName() + " has collected all six colours! Last round begins.");
                 lastRoundTriggered = true;
                 lastRoundTurnsTaken = 0; // Reset counter for final turns
@@ -175,7 +178,7 @@ public class ParadeGame {
         }
     
         if (deck.isEmpty() && !lastRoundTriggered) {
-            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("--------------------------------------------------------------------------------------------------------------");
             System.out.println("Deck is empty! Last round begins.");
             lastRoundTriggered = true;
             lastRoundTurnsTaken = 0; // Reset counter for final turns
@@ -246,15 +249,6 @@ public class ParadeGame {
                     currentPlayer.addToCollectedCards(cardInParade);
                 }
             }
-        }
-    }
-    
-
-    // Print the current state of the parade and the player's hands
-    private void printGameState() {
-        displayParade();
-        for (Player player : players) {
-            displayHand(player);
         }
     }
 
@@ -328,7 +322,7 @@ public class ParadeGame {
             displaySingleCard(discardedCard1);
 
 
-            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("--------------------------------------------------------------------------------------------------------------");
 
             // Display the updated hand
             System.out.print("After discarding the 1st card, ");
@@ -366,7 +360,7 @@ public class ParadeGame {
             System.out.println(player.getName() + " discarded:");
             displaySingleCard(discardedCard2);
 
-            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("--------------------------------------------------------------------------------------------------------------");
 
             // Add the remaining cards in hand to collected cards
             for (Card card : player.getHand()) {
