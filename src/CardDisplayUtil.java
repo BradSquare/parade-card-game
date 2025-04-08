@@ -69,7 +69,7 @@ public class CardDisplayUtil {
         String spaceNumLeft = numStr + " ".repeat(innerWidth - numStr.length() - 1);
         String spaceNumRight = " ".repeat(innerWidth - numStr.length() - 1) + numStr;
     
-        // Center the color label
+        // Center the colour label
         int colourLength = colour.length();
         int totalPadding = innerWidth - colourLength;
         int paddingLeft = totalPadding / 2;

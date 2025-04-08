@@ -1,16 +1,20 @@
 import java.util.ArrayList;
 
 public class Player {
+
+// Instance variables
     private String name;
     private ArrayList<Card> hand;
     private ArrayList<Card> collectedCards;
 
+// Constructor
     public Player(String name) {
         this.name = name;
         this.hand = new ArrayList<>();
         this.collectedCards = new ArrayList<>();
     }
 
+// Instance methods
     public String getName() {
         return name;
     }
@@ -42,6 +46,7 @@ public class Player {
         collectedCards.add(card);
     }
 
+    // Updates the player's list of card colours collected
     private void updateColourCount(int[] colourCount, Card card) {
         int index = getColourIndex(card.getColour());
         if (index != -1) {

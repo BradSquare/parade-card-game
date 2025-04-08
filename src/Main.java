@@ -8,7 +8,6 @@ public class Main {
         int numHumans = 1;
         int numComputers = 0;
 
-        // Initial prompt for selecting the type of game
         while (true) {
             System.out.println("-------------------------------------- Welcome to Parade! ----------------------------------------------------");
             System.out.println("Select Game Mode:");
@@ -19,8 +18,7 @@ public class Main {
             if (scanner.hasNextInt()) {
                 int gameMode = scanner.nextInt();
 
-                if (gameMode == 1) {
-                    // If Human vs Computer(s)
+                if (gameMode == 1) { // If Human vs Computer(s)
                     while (true) {
                         System.out.print("Enter number of computer(s) (1-5): ");
 
@@ -39,10 +37,9 @@ public class Main {
                         }
                     }
                     break;  // Exit the loop after valid selection
-                } else if (gameMode == 2) {
-                    // If Human vs Human(s)
+                } else if (gameMode == 2) { // If Human vs Human(s)
                     while (true) {
-                        System.out.print("Enter total number of human(s) (2-6): ");
+                        System.out.print("Enter total number of player(s) (2-6): ");
 
                         if (scanner.hasNextInt()) {
                             numHumans = scanner.nextInt();

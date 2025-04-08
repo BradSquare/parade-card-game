@@ -1,25 +1,24 @@
 public class Card {
 
+// Instance variables
     private final int value;
     private final String colour;
 
-    // Constructor to initialize the card's value and colour
+// Constructor
     public Card(int value, String colour) {
         this.value = value;
         this.colour = colour;
     }
 
-    // Get the value of the card
+// Instance methods
     public int getValue() {
         return value;
     }
 
-    // Get the colour of the card
     public String getColour() {
         return colour;
     }
 
-    // Represent the card as a string
     @Override
     public String toString() {
         return colour + " " + value;

@@ -3,6 +3,8 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class ParadeGame {
+
+// Instance variables
     private ArrayList<Card> deck;
     private ArrayList<Player> players;
     private ArrayList<Card> parade;
@@ -11,14 +13,15 @@ public class ParadeGame {
     private int lastRoundTurnsTaken = 0;
     private Scanner scanner;
 
-    // Initial game setup
+// Constructor
+    // Game Setup
     public ParadeGame(int numPlayers, int numComputers, int computerDifficulty) {
         deck = new ArrayList<>();
         players = new ArrayList<>();
         parade = new ArrayList<>();
         currentPlayerIndex = 0;
 
-        // Create deck of cards, 6 colours * 11 numbers
+        // Create deck of cards, with 6 colours * 11 numbers (from 0 - 10)
         for (int value = 0; value <= 10; value++) {
             for (String colour : new String[]{"Red", "Blue", "Grey", "Green", "Purple", "Orange"}) {
                 deck.add(new Card(value, colour));
@@ -28,8 +31,7 @@ public class ParadeGame {
         // Randomise cards in the initialised deck
         Collections.shuffle(deck);
 
-        // Create players and computers
-        // Get human player names
+        // Create players and computers and get human player names
         this.scanner = new Scanner(System.in);
         ArrayList<String> playerNames = new ArrayList<>();
         for (int i = 1; i <= numPlayers; i++) {
@@ -63,7 +65,7 @@ public class ParadeGame {
             parade.add(deck.remove(0)); // remove the top card from the deck and add it to the parade
         }
 
-        // Set random starting player (using existing helper method)
+        // Set random starting player (reusing instance method from Computer)
         currentPlayerIndex = Computer.getRandomInt(players.size() - 1);
     }
 
@@ -81,18 +83,16 @@ public class ParadeGame {
     
         // Game loop
         while (!isGameOver()) {
-            Player currentPlayer = players.get(currentPlayerIndex);  // Ensure currentPlayer is defined
+            // Define the current player
+            Player currentPlayer = players.get(currentPlayerIndex);
     
-            // Print the game state for the current player
             System.out.println("--------------------------------------------------------------------------------------------------------------");
             displayParade();
-            // Display the number of cards left in the deck
             System.out.println("Cards left in the deck: " + deck.size());
             System.out.println("--------------------------------------------------------------------------------------------------------------");
             
             System.out.println(currentPlayer.getName() + ", your turn!");
             System.out.println();
-            // Display the player's collected cards
             displayCollectedCards(currentPlayer);
             System.out.println();
 
@@ -107,10 +107,10 @@ public class ParadeGame {
     
             int cardIndex;
             Card playedCard;
-            if (currentPlayer instanceof Computer) { // CurrentPlayer is a computer.
+            if (currentPlayer instanceof Computer) { // if current player is a computer
                 Computer computer = (Computer) currentPlayer;
                 playedCard = computer.playCard(parade);
-            } else { // CurrentPlayer is an actual person playing.
+            } else { // current player is an actual person playing.
                 while (true) {  // Keep asking for input until a valid one is given
                     System.out.print("Choose a card index to play: ");
                     if (scanner.hasNextInt()) {
@@ -164,7 +164,7 @@ public class ParadeGame {
                 System.out.println("Final round is completed. Game Over!");
                 return true;
             }
-            return false;  // Continue last round
+            return false;  // Continue next round
         }
     
         for (Player player : players) {
@@ -294,12 +294,12 @@ public class ParadeGame {
 
             // Choose the 1st card to discard
             int cardIndex1 = -1;
-            if (player instanceof Computer) { // if player is a computer, randomly pick card to discard
+            if (player instanceof Computer) { // if player is a computer, computer discards cards based on difficulty
                 Computer computer = (Computer) player;
                 cardIndex1 = computer.discardCard(parade, players);
                 System.out.println("Choose 1st card to discard: " + cardIndex1);
                 System.out.println();
-            } else { // player is an actual human playing. 
+            } else { // player is an actual human playing, allow player to choose which card to discard
                 while (cardIndex1 < 0 || cardIndex1 >= player.getHandSize()) {
                     System.out.print("Choose 1st card to discard: ");
                     if (scanner.hasNextInt()) {
@@ -369,8 +369,8 @@ public class ParadeGame {
     
         }
 
+        // Calculate scores for each player and display each player's collected cards
         for (Player player : players) {
-            // Calculate score: sum of values of all collected cards + majority points
             int score = player.calculateScore(players);
             System.out.print("At the end of the game, ");
             displayCollectedCards(player);
@@ -378,7 +378,7 @@ public class ParadeGame {
             System.out.println();
         }
     
-        // Determine the winner (player with the lowest score)
+        // Determine the winner
         ArrayList<Player> winners = determineWinner();
         if (winners.size() == 1) {
             System.out.println("The winner is " + winners.get(0).getName() + "!");
@@ -403,18 +403,19 @@ public class ParadeGame {
         for (Player player : players) {
             int score = player.calculateScore(players);
             int cardCount = player.getCollectedCards().size();
-    
+            
+            // Player with the lowest score wins
             if (score < lowestScore) {
                 winnersList.clear();
                 winnersList.add(player);
                 lowestScore = score;
                 fewestCards = cardCount;
-            } else if (score == lowestScore) {
-                if (cardCount < fewestCards) {
+            } else if (score == lowestScore) { // if players are tied with lowest score,
+                if (cardCount < fewestCards) { // player with fewer cards will win instead
                     winnersList.clear();
                     winnersList.add(player);
                     fewestCards = cardCount;
-                } else if (cardCount == fewestCards) {
+                } else if (cardCount == fewestCards) { // multiple winners if players are tied in score and number of cards
                     winnersList.add(player);
                 }
             }

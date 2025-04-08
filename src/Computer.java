@@ -1,19 +1,23 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-// Imported from Player.java
 public class Computer extends Player {
+
+// Instance variable
     private int difficulty;
 
+// Constructor
     public Computer(String name, int difficulty) {
         super(name);
         this.difficulty = difficulty;
     }
 
+// Instance methods
     public int getDifficulty() {
         return difficulty;
     }
 
+    // Chooses which card to play based on computer difficulty
     public Card playCard(ArrayList<Card> parade) {
         switch (difficulty) {
             case 1:
@@ -30,11 +34,11 @@ public class Computer extends Player {
     // Plays a random card
     private Card playEasy() {
         Random random = new Random();
-        int index = random.nextInt(getHandSize()); // Pick a random card
+        int index = random.nextInt(getHandSize());
         return super.playCard(index);
     }
 
-    // Plays a card that will remove the least number of cards
+    // Plays a card that will remove the least number of cards from parade and add the least amount of cards to collected cards
     private Card playMedium(ArrayList<Card> parade) {
         ArrayList<Card> hand = getHand();
         Card bestCard = hand.get(0);
@@ -50,7 +54,7 @@ public class Computer extends Player {
         return super.playCard(hand.indexOf(bestCard));
     }
 
-    // Plays the card that removes cards that adds the least value
+    // Plays the card that removes cards from the parade that adds the least value to collected cards
     private Card playHard(ArrayList<Card> parade) {
         ArrayList<Card> hand = getHand();
         Card bestCard = hand.get(0);
@@ -66,7 +70,7 @@ public class Computer extends Player {
         return super.playCard(hand.indexOf(bestCard));
     }
 
-    // Simulate how many cards will be removed when this card is played
+    // Simulate how many cards will be removed from the parade when this card is played
     private int simulateCardEffect(Card card, ArrayList<Card> parade) {
         int count = 0;
         for (int i = parade.size() - 2; i >= 0; i--) {
@@ -79,7 +83,7 @@ public class Computer extends Player {
         return count;
     }
 
-    // Simulate the penalty incurred by playing this card
+    // Simulate the total value of the cards removed from the parade when this card is played
     private int simulatePenalty(Card card, ArrayList<Card> parade) {
         int penalty = 0;
         for (int i = parade.size() - 2; i >= 0; i--) {
@@ -94,14 +98,15 @@ public class Computer extends Player {
 
     public static int getRandomInt(int range) {
         Random random = new Random();
-        return random.nextInt(range + 1); // Generates number within range (inclusive)
+        return random.nextInt(range + 1);
     }
 
+    // Chooses which card index to discard based on computer difficulty
     public int discardCard(ArrayList<Card> parade, ArrayList<Player> players) {
         int cardIndex = -1;
         switch (difficulty) {
             case 1:
-                cardIndex = getRandomInt(getHandSize() - 1); // random int from 0 to handsize - 1.
+                cardIndex = getRandomInt(getHandSize() - 1);
                 break;
             case 2:
                 int max = 0;
