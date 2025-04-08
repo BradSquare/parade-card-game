@@ -267,19 +267,19 @@ public class ParadeGame {
     }
 
     // Visually display the parade
-    public void displayParade() {
+    private void displayParade() {
         System.out.println("Current Parade:");
         CardDisplayUtil.displayCards(parade);
     }
 
     // Visually display the player's hand
-    public void displayHand(Player player) {
+    private void displayHand(Player player) {
         System.out.println(player.getName() + "'s Hand:");
         CardDisplayUtil.displayCards(player.getHand());
     }
 
     // Visually display the collected cards
-    public void displayCollectedCards(Player currentPlayer) {
+    private void displayCollectedCards(Player currentPlayer) {
         System.out.println(currentPlayer.getName() + "'s Collected Cards: ");
         if (currentPlayer.getCollectedCards().size() == 0) {
             System.out.println("No Cards Collected!");
@@ -289,7 +289,7 @@ public class ParadeGame {
     }
 
     // Visually display a single card
-    public void displaySingleCard(Card card) {
+    private void displaySingleCard(Card card) {
         ArrayList<Card> cardAsList = new ArrayList<Card>();
         cardAsList.add(card);
         CardDisplayUtil.displayCards(cardAsList);
