@@ -1,7 +1,7 @@
 public class Card {
 
-    private int value;
-    private String colour;
+    private final int value;
+    private final String colour;
 
     // Constructor to initialize the card's value and colour
     public Card(int value, String colour) {

@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 import java.util.Scanner;
 
 public class ParadeGame {
@@ -386,36 +385,47 @@ public class ParadeGame {
         }
     
         // Determine the winner (player with the lowest score)
-        Player winner = determineWinner();
-        System.out.println("The winner is " + winner.getName() + "!");
+        ArrayList<Player> winners = determineWinner();
+        if (winners.size() == 1) {
+            System.out.println("The winner is " + winners.get(0).getName() + "!");
+        } else {
+            System.out.println("It's a tie between: ");
+            for (Player p : winners) {
+                System.out.println("- " + p.getName());
+            }
+        }
 
         if (scanner != null) {
             scanner.close();
         }
     }
 
-    private Player determineWinner() {
-        Player winner = players.get(0);
-        int lowestScore = winner.calculateScore(players);
-        int fewestCards = winner.getCollectedCards().size();
+    private ArrayList<Player> determineWinner() {
+        int lowestScore = Integer.MAX_VALUE;
+        int fewestCards = Integer.MAX_VALUE;
+
+        ArrayList<Player> winnersList = new ArrayList<>();
     
-        for (int i = 1; i < players.size(); i++) {
-            Player player = players.get(i);
+        for (Player player : players) {
             int score = player.calculateScore(players);
             int cardCount = player.getCollectedCards().size();
     
             if (score < lowestScore) {
-                winner = player;
+                winnersList.clear();
+                winnersList.add(player);
                 lowestScore = score;
                 fewestCards = cardCount;
             } else if (score == lowestScore) {
                 if (cardCount < fewestCards) {
-                    winner = player;
+                    winnersList.clear();
+                    winnersList.add(player);
                     fewestCards = cardCount;
+                } else if (cardCount == fewestCards) {
+                    winnersList.add(player);
                 }
             }
         }
     
-        return winner;
+        return winnersList;
     }
 }
