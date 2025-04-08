@@ -2,14 +2,13 @@ import java.util.ArrayList;
 
 public class CardDisplayUtil {
     // ANSI colour codes
-    public static final String RESET = "\u001B[0m";
-    public static final String RED = "\u001B[31m";
-    public static final String GREEN = "\u001B[32m";
-    public static final String YELLOW = "\u001B[33m";  // used for Orange fallback
-    public static final String BLUE = "\u001B[34m";
-    public static final String PURPLE = "\u001B[35m";
-    public static final String GREY = "\u001B[37m";    // Light grey
-    public static final String ORANGE = "\u001B[38;5;208m"; // Extended ANSI colour for orange
+    private static final String RESET = "\u001B[0m";
+    private static final String RED = "\u001B[31m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String BLUE = "\u001B[34m";
+    private static final String PURPLE = "\u001B[35m";
+    private static final String GREY = "\u001B[37m";    // Light grey
+    private static final String ORANGE = "\u001B[38;5;208m"; // Extended ANSI colour for orange
 
     public static void displayCards(ArrayList<Card> cards) {
         int totalCards = cards.size();
@@ -22,7 +21,7 @@ public class CardDisplayUtil {
         }
     }
 
-    public static void displayRow(ArrayList<Card> row) {
+    private static void displayRow(ArrayList<Card> row) {
         // List to store the lines for each card
         ArrayList<String[]> cardLinesList = new ArrayList<>();
 
@@ -46,7 +45,7 @@ public class CardDisplayUtil {
     }
 
     // Get colour code from colour string
-    public static String getColourCode(String colour) {
+    private static String getColourCode(String colour) {
         return switch (colour.toLowerCase()) {
             case "red" -> RED;
             case "blue" -> BLUE;
@@ -59,7 +58,7 @@ public class CardDisplayUtil {
     }
 
     // Return a string of the card in ASCII format with colour
-    public static String getCardArt(String colour, int number) {
+    private static String getCardArt(String colour, int number) {
         String colourCode = getColourCode(colour);
         String numStr = String.valueOf(number);
     

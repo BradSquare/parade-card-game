@@ -108,9 +108,9 @@ public class Computer extends Player {
         return penalty;
     }
 
-    public static int getRandomInt(int max) {
+    public static int getRandomInt(int range) {
         Random random = new Random();
-        return random.nextInt(max + 1); // Generates number from 0 to max (inclusive)
+        return random.nextInt(range + 1); // Generates number within range (inclusive)
     }
 
     public int discardCard(ArrayList<Card> parade, ArrayList<Player> players) {

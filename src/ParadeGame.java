@@ -65,7 +65,7 @@ public class ParadeGame {
         }
 
         // Set random starting player (using existing helper method)
-        currentPlayerIndex = getRandomInt(players.size() - 1);
+        currentPlayerIndex = Computer.getRandomInt(players.size() - 1);
     }
 
     // Deal 5 cards to all the players
@@ -185,13 +185,6 @@ public class ParadeGame {
     
         return false; 
     }
-
-    // Generate a random int for computer's turn.
-    public static int getRandomInt(int max) {
-        Random random = new Random();
-        return random.nextInt(max + 1); // Generates number from 0 to max (inclusive)
-    }
-    
     
     // Check if a player has collected at least one card of each colour
     private boolean hasCollectedAllColours(Player player) {
