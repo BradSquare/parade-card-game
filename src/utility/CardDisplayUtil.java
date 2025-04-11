@@ -1,4 +1,4 @@
-package util;
+package utility;
 import java.util.ArrayList;
 
 import entity.Card;

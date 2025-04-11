@@ -6,7 +6,7 @@ import java.util.Scanner;
 import entity.Card;
 import entity.Computer;
 import entity.Player;
-import util.CardDisplayUtil;
+import utility.CardDisplayUtil;
 
 public class ParadeGame {
 
