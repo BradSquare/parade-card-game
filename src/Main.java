@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import game.ParadeGame;
+
 public class Main {
     public static void main(String[] args) {
 

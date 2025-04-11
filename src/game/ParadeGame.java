@@ -1,6 +1,12 @@
+package game;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
+
+import entity.Card;
+import entity.Computer;
+import entity.Player;
+import util.CardDisplayUtil;
 
 public class ParadeGame {
 
