@@ -2,14 +2,25 @@ package entity;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a player in the Parade game.
+ * Each player has a hand of cards and a collection of cards gathered throughout the game.
+ */
 public class Player {
 
 // Instance variables
+
     private String name;
     private ArrayList<Card> hand;
     private ArrayList<Card> collectedCards;
 
 // Constructor
+
+    /**
+     * Constructs a Player with a specified name.
+     * 
+     * @param name The name of the player.
+    */
     public Player(String name) {
         this.name = name;
         this.hand = new ArrayList<>();

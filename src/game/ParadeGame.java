@@ -1,12 +1,7 @@
 package game;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 import entity.Card;
 import entity.Computer;
@@ -25,7 +20,7 @@ public class ParadeGame {
 
     /** The parade where played cards are placed. */
     private ArrayList<Card> parade;
-    
+
     private int currentPlayerIndex;
     private boolean lastRoundTriggered = false;
     private int lastRoundTurnsTaken = 0;
@@ -471,8 +466,6 @@ public class ParadeGame {
                 System.out.println("- " + p.getName());
             }
         }
-        
-        playVictorySound();
 
         if (scanner != null) {
             scanner.close();
@@ -517,49 +510,6 @@ public class ParadeGame {
         }
     
         return winnersList;
-    }
-
-    /**
-     * Plays a victory sound from a local WAV file and displays a "Congratulations!" 
-     * message character by character using a typewriter effect.
-     *
-     * @throws RuntimeException if there is an issue loading or playing the sound.
-     */
-    private void playVictorySound() {
-        try {
-            File soundFile = new File("src/resources/tada.wav");
-            if (!soundFile.exists()) {
-                System.out.println("File not found: " + soundFile.getAbsolutePath());
-                return;
-            }
-    
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-    
-            clip.start();
-    
-            String message = "~~ Congratulations! ~~";
-            for (char c : message.toCharArray()) {
-                System.out.print(c);
-                System.out.flush(); // force immediate print
-                Thread.sleep(150);  // adjust typing speed here
-            }
-    
-            // Wait for the rest of the sound to finish (if any)
-            long timeTyped = message.length() * 150L;
-            long totalDuration = clip.getMicrosecondLength() / 1000;
-            long remaining = totalDuration - timeTyped;
-            if (remaining > 0) {
-                Thread.sleep(remaining);
-            }
-    
-            clip.close();
-            System.out.println(); // move to next line
-    
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
     
 
