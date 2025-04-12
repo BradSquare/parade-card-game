@@ -160,6 +160,7 @@ public class ParadeGame {
 
     }
 
+    // Checks the various end game conditions to see if the game is over
     private boolean isGameOver() {
         if (lastRoundTriggered) {
             lastRoundTurnsTaken++;
@@ -172,6 +173,7 @@ public class ParadeGame {
             return false;  // Continue next round
         }
     
+        // If a player has collected all 6 colours
         for (Player player : players) {
             if (hasCollectedAllColours(player)) {
                 System.out.println("--------------------------------------------------------------------------------------------------------------");
@@ -182,6 +184,7 @@ public class ParadeGame {
             }
         }
     
+        // If the deck is empty and the last round has not been played
         if (deck.isEmpty() && !lastRoundTriggered) {
             System.out.println("--------------------------------------------------------------------------------------------------------------");
             System.out.println("Deck is empty! Last round begins.");
@@ -326,7 +329,6 @@ public class ParadeGame {
             System.out.println(player.getName() + " discarded:");
             displaySingleCard(discardedCard1);
 
-
             System.out.println("--------------------------------------------------------------------------------------------------------------");
 
             // Display the updated hand
@@ -415,12 +417,12 @@ public class ParadeGame {
                 winnersList.add(player);
                 lowestScore = score;
                 fewestCards = cardCount;
-            } else if (score == lowestScore) { // if players are tied with lowest score,
+            } else if (score == lowestScore) { // If players are tied with lowest score,
                 if (cardCount < fewestCards) { // player with fewer cards will win instead
                     winnersList.clear();
                     winnersList.add(player);
                     fewestCards = cardCount;
-                } else if (cardCount == fewestCards) { // multiple winners if players are tied in score and number of cards
+                } else if (cardCount == fewestCards) { // Multiple winners if players have the same score and number of cards
                     winnersList.add(player);
                 }
             }

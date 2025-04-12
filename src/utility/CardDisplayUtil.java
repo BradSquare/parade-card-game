@@ -10,8 +10,8 @@ public class CardDisplayUtil {
     private static final String GREEN = "\u001B[32m";
     private static final String BLUE = "\u001B[34m";
     private static final String PURPLE = "\u001B[35m";
-    private static final String GREY = "\u001B[37m";    // Light grey
-    private static final String ORANGE = "\u001B[38;5;208m"; // Extended ANSI colour for orange
+    private static final String GREY = "\u001B[37m";
+    private static final String ORANGE = "\u001B[38;5;208m";
 
     public static void displayCards(ArrayList<Card> cards) {
         int totalCards = cards.size();

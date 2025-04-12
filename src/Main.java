@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 import game.ParadeGame;
+import utility.LoadingScreen;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,7 +12,8 @@ public class Main {
         int numComputers = 0;
 
         while (true) {
-            System.out.println("-------------------------------------- Welcome to Parade! ----------------------------------------------------");
+            LoadingScreen.run();
+            System.out.println("--------------------------------------------------------------------------------------------");
             System.out.println("Select Game Mode:");
             System.out.println("1. Human vs Computer(s)");
             System.out.println("2. Human vs Human(s)");
