@@ -7,6 +7,7 @@ import entity.Card;
 import entity.Computer;
 import entity.Player;
 import utility.CardDisplayUtil;
+import utility.LoadingUtil;
 
 public class ParadeGame {
 
@@ -55,7 +56,7 @@ public class ParadeGame {
         this.scanner = new Scanner(System.in);
         ArrayList<String> playerNames = new ArrayList<>();
         for (int i = 1; i <= numPlayers; i++) {
-            System.out.print("Enter name for Player " + i + ": ");
+            System.out.print("\nEnter name for Player " + i + ": ");
             String name = scanner.nextLine().trim();
             while (name.isEmpty()) {
                 System.out.println("Name cannot be empty!");
@@ -104,7 +105,7 @@ public class ParadeGame {
      * Starts the game by dealing initial hands and running the game loop.
     */
     public void startGame() {
-    
+        int playedCount = 1;
         // Game loop
         while (!isGameOver()) {
             // Define the current player
@@ -114,16 +115,19 @@ public class ParadeGame {
             displayParade();
             System.out.println("Cards left in the deck: " + deck.size());
             System.out.println("--------------------------------------------------------------------------------------------------------------");
-            
-            System.out.println(currentPlayer.getName() + ", your turn!");
-            System.out.println();
-            displayCollectedCards(currentPlayer);
-            System.out.println();
+            LoadingUtil.Delay();
+            LoadingUtil.Delay();
+
+            System.out.println(currentPlayer.getName() + ", your turn!\n");
+
+            // Do not display collected cards if it is the first round
+            if (playedCount > players.size()) {
+                displayCollectedCards(currentPlayer);
+            }
 
             displayHand(currentPlayer);
     
             // Display player's hand for player to select card to play
-            System.out.println("Your Hand:");
             for (int i = 0; i < currentPlayer.getHandSize(); i++) {
                 System.out.println(i + ": " + currentPlayer.getHand().get(i));
             }
@@ -133,6 +137,8 @@ public class ParadeGame {
             if (currentPlayer instanceof Computer) { // Current player is a computer
                 Computer computer = (Computer) currentPlayer;
                 playedCard = computer.playCard(parade);
+                System.out.print("\n" + currentPlayer.getName() + " is thinking");
+                LoadingUtil.Ellipsis();
             } else { // Current player is an actual person playing.
                 while (true) {  // Keep asking for input until a valid one is given
                     System.out.print("Choose a card index to play: ");
@@ -142,7 +148,7 @@ public class ParadeGame {
                             break;  // Exit loop when a valid index is provided
                         }
                     } else {
-                        scanner.next();  // Clear invalid input
+                        scanner.nextLine();  // Clear invalid input
                     }
                     System.out.println("Invalid choice! Please enter a valid card index.");
                 }
@@ -169,6 +175,12 @@ public class ParadeGame {
             // Move to the next player
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
             
+            playedCount++;
+
+            LoadingUtil.Delay();
+            LoadingUtil.Delay();
+            LoadingUtil.Delay();
+            LoadingUtil.Delay();
         }
         
         // End the game and show results
@@ -339,7 +351,7 @@ public class ParadeGame {
     private void displayCollectedCards(Player currentPlayer) {
         System.out.println(currentPlayer.getName() + "'s Collected Cards: ");
         if (currentPlayer.getCollectedCards().size() == 0) {
-            System.out.println("No Cards Collected!");
+            System.out.println("No Cards Collected!\n");
             return;
         }
         CardDisplayUtil.displayCards(currentPlayer.getCollectedCards());
@@ -387,7 +399,7 @@ public class ParadeGame {
                                 System.out.println("Invalid index! Please choose a valid index.");
                             }
                     } else {
-                        scanner.next();  // Clear the invalid input
+                        scanner.nextLine();  // Clear the invalid input
                         System.out.println("Invalid input! Please enter a valid number.");
                     }
                 }
@@ -425,7 +437,7 @@ public class ParadeGame {
                             System.out.println("Invalid index! Please choose a valid index.");
                         }
                     } else {
-                        scanner.next();  // Clear the invalid input
+                        scanner.nextLine();  // Clear the invalid input
                         System.out.println("Invalid input! Please enter a valid number.");
                     }
                 }

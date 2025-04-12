@@ -1,6 +1,6 @@
 package utility;
 
-public class LoadingScreen {
+public class LoadingUtil {
 
     // ANSI colour codes
     private static final String RESET = "\u001B[0m";
@@ -10,27 +10,18 @@ public class LoadingScreen {
     private static final String PURPLE = "\u001B[35m";
     private static final String ORANGE = "\u001B[38;5;208m";
 
-    public static void run() {
+    public static void startScreen() {
         System.out.print("\nCreating the Wonderland");
-        for (int i = 0; i < 4; i++) {
-            Delay();
-            System.out.print(".");
-        }
+        Ellipsis();
 
-        System.out.print("\n\nDecorating the streets");
-        for (int i = 0; i < 4; i++) {
-            Delay();
-            System.out.print(".");
-        }
+        System.out.print("\nDecorating the streets");
+        Ellipsis();
 
-        System.out.print("\n\nPreparing the costumes");
-        for (int i = 0; i < 4; i++) {
-            Delay();
-            System.out.print(".");
-        }
+        System.out.print("\nPreparing the costumes");
+        Ellipsis();
         Delay();
 
-        System.out.println("\n\nDone!");
+        System.out.println("\nDone!");
         Delay();
 
         System.out.println("        ,--.   ,--.      ,--.                             ,--------.       ,--------.,--.            ");
@@ -57,7 +48,17 @@ public class LoadingScreen {
 
     }
 
-    private static void Delay(){
+    // Prints buffering ellipses
+    public static void Ellipsis() {
+        for (int i = 0; i < 4; i++) {
+            Delay();
+            System.out.print(".");
+        }
+        System.out.println();
+    }
+
+    // Pauses the program to create a short delay
+    public static void Delay(){
         try {
             Thread.sleep(500); // Wait 500 milliseconds
         } catch (InterruptedException e) {
