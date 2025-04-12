@@ -98,6 +98,12 @@ public class Computer extends Player {
         return penalty;
     }
 
+    /*
+     * Generates a random integer for the computer player's turn.
+     * 
+     * @param range The upper bound (inclusive) for the random integer.
+     * @return A random integer between 0 and max.
+    */
     public static int getRandomInt(int range) {
         Random random = new Random();
         return random.nextInt(range + 1);
