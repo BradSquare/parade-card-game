@@ -102,10 +102,9 @@ public class ParadeGame {
             displayCollectedCards(currentPlayer);
             System.out.println();
 
-            // Display the player's hand
             displayHand(currentPlayer);
     
-            // Display player's hand
+            // Display player's hand for player to select card to play
             System.out.println("Your Hand:");
             for (int i = 0; i < currentPlayer.getHandSize(); i++) {
                 System.out.println(i + ": " + currentPlayer.getHand().get(i));
@@ -113,10 +112,10 @@ public class ParadeGame {
     
             int cardIndex;
             Card playedCard;
-            if (currentPlayer instanceof Computer) { // if current player is a computer
+            if (currentPlayer instanceof Computer) { // Current player is a computer
                 Computer computer = (Computer) currentPlayer;
                 playedCard = computer.playCard(parade);
-            } else { // current player is an actual person playing.
+            } else { // Current player is an actual person playing.
                 while (true) {  // Keep asking for input until a valid one is given
                     System.out.print("Choose a card index to play: ");
                     if (scanner.hasNextInt()) {

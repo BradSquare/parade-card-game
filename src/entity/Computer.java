@@ -1,4 +1,5 @@
 package entity;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -39,7 +40,7 @@ public class Computer extends Player {
         return super.playCard(index);
     }
 
-    // Plays a card that will remove the least number of cards from parade and add the least amount of cards to collected cards
+    // Plays the card that will remove the least number of cards from parade
     private Card playMedium(ArrayList<Card> parade) {
         ArrayList<Card> hand = getHand();
         Card bestCard = hand.get(0);
@@ -55,7 +56,7 @@ public class Computer extends Player {
         return super.playCard(hand.indexOf(bestCard));
     }
 
-    // Plays the card that removes cards from the parade that adds the least value to collected cards
+    // Plays the card that minimizes the point value of cards collected from the parade
     private Card playHard(ArrayList<Card> parade) {
         ArrayList<Card> hand = getHand();
         Card bestCard = hand.get(0);
@@ -84,7 +85,7 @@ public class Computer extends Player {
         return count;
     }
 
-    // Simulate the total value of the cards removed from the parade when this card is played
+    // Simulate the total point value of the cards removed from the parade when this card is played
     private int simulatePenalty(Card card, ArrayList<Card> parade) {
         int penalty = 0;
         for (int i = parade.size() - 2; i >= 0; i--) {
@@ -106,10 +107,13 @@ public class Computer extends Player {
     public int discardCard(ArrayList<Card> parade, ArrayList<Player> players) {
         int cardIndex = -1;
         switch (difficulty) {
-            case 1:
+            // Discards a random card
+            case 1: // Easy difficulty
                 cardIndex = getRandomInt(getHandSize() - 1);
                 break;
-            case 2:
+
+            // Discards the card with the highest point value
+            case 2: // Medium difficulty
                 int max = 0;
                 int cardIndexMedium = 0; 
                 for (Card c : getHand()) {
@@ -121,7 +125,9 @@ public class Computer extends Player {
                     cardIndexMedium++;
                 }
                 break;
-            case 3:
+            
+            // Discards the card that will give the computer the lowest final score
+            case 3: // Hard difficulty
                 int minPoints = Integer.MAX_VALUE;
                 int cardIndexHard = 0;
                 for (Card c : getHand()) {
