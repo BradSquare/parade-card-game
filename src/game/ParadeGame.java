@@ -16,16 +16,30 @@ import utility.CardDisplayUtil;
 public class ParadeGame {
 
 // Instance variables
+
+    /** The deck of cards used in the game. */
     private ArrayList<Card> deck;
+
+    /** List of players in the game. */
     private ArrayList<Player> players;
+
+    /** The parade where played cards are placed. */
     private ArrayList<Card> parade;
+    
     private int currentPlayerIndex;
     private boolean lastRoundTriggered = false;
     private int lastRoundTurnsTaken = 0;
     private Scanner scanner;
 
 // Constructor
-    // Game Setup
+
+    /**
+     * Constructs a new Parade game with the specified number of players.
+     * 
+     * @param numPlayers The number of players participating in the game.
+     * @param numComputers The number of computer players participating in the game.
+     * @param computerDifficulty The AI difficulty level (1: Easy, 2: Medium, 3: Hard).
+    */
     public ParadeGame(int numPlayers, int numComputers, int computerDifficulty) {
         deck = new ArrayList<>();
         players = new ArrayList<>();
@@ -80,7 +94,9 @@ public class ParadeGame {
         currentPlayerIndex = Computer.getRandomInt(players.size() - 1);
     }
 
-    // Deal 5 cards to all the players
+    /**
+     * Deal 5 cards to all the players
+    */
     private void dealCards() {
         for (Player player : players) {
             for (int i = 0; i < 5; i++) {
@@ -89,7 +105,9 @@ public class ParadeGame {
         }
     }
 
-    // Gameplay
+    /**
+     * Starts the game by dealing initial hands and running the game loop.
+    */
     public void startGame() {
     
         // Game loop
@@ -165,7 +183,20 @@ public class ParadeGame {
 
     }
 
-    // Checks the various end game conditions to see if the game is over
+    /**
+     * Determines whether the game has ended based on game state conditions.
+     * The game ends when either:
+     * <ul>
+     *   <li>A player has collected at least one card of each color (triggers final round)</li>
+     *   <li>The deck is empty (triggers final round)</li>
+     * </ul>
+     * 
+     * <p>When a game-ending condition is detected, appropriate status messages are displayed.
+     * This method also manages the final round trigger state and turn counting.
+     *
+     * @return {@code true} if the game has ended, {@code false} if the game should continue
+     * @see #hasCollectedAllColours(Player)
+    */
     private boolean isGameOver() {
         if (lastRoundTriggered) {
             lastRoundTurnsTaken++;
@@ -496,7 +527,7 @@ public class ParadeGame {
      */
     private void playVictorySound() {
         try {
-            File soundFile = new File("resources/tada.wav");
+            File soundFile = new File("src/resources/tada.wav");
             if (!soundFile.exists()) {
                 System.out.println("File not found: " + soundFile.getAbsolutePath());
                 return;
