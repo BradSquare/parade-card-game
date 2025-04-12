@@ -137,7 +137,7 @@ public class ParadeGame {
             if (currentPlayer instanceof Computer) { // Current player is a computer
                 Computer computer = (Computer) currentPlayer;
                 playedCard = computer.playCard(parade);
-                System.out.print("\n" + currentPlayer.getName() + " is thinking");
+                System.out.println("\n" + currentPlayer.getName() + " is thinking");
                 LoadingUtil.Ellipsis();
             } else { // Current player is an actual person playing.
                 while (true) {  // Keep asking for input until a valid one is given
