@@ -12,19 +12,19 @@ public class LoadingScreen {
 
     public static void run() {
         System.out.print("\nCreating the Wonderland");
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 4; i++) {
             Delay();
             System.out.print(".");
         }
 
         System.out.print("\n\nDecorating the streets");
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 4; i++) {
             Delay();
             System.out.print(".");
         }
 
         System.out.print("\n\nPreparing the costumes");
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 4; i++) {
             Delay();
             System.out.print(".");
         }

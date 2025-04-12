@@ -1,7 +1,12 @@
 package game;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import entity.Card;
 import entity.Computer;
@@ -196,7 +201,16 @@ public class ParadeGame {
         return false; 
     }
     
-    // Check if a player has collected at least one card of each colour
+    /**
+     * Determines whether the specified player has collected at least one card of each color.
+     * The colors checked are: Red, Blue, Grey, Green, Purple, and Orange.
+     *
+     * @param player The player whose collected cards will be checked. Must not be null.
+     * @return {@code true} if the player has collected at least one card of each color,
+     *         {@code false} otherwise.
+     * @throws NullPointerException if the player parameter is null.
+     * @see Card
+    */
     private boolean hasCollectedAllColours(Player player) {
         boolean[] coloursPresent = new boolean[6];  // Array to track colours (Red, Blue, Grey, Green, Purple, Orange)
         
@@ -220,6 +234,13 @@ public class ParadeGame {
         return true;
     }
 
+    /**
+     * Handles the removal of cards from the parade based on the played card.
+     *
+     * @param playedCard The card that was played and triggers the removal. Must not be null.
+     * @param currentPlayer The player who played the card. Must not be null.
+     * @throws NullPointerException if either playedCard or currentPlayer is null.
+    */
     private void handleCardRemoval(Card playedCard, Player currentPlayer) {
         // Get the number of cards in the parade
         int paradeSize = parade.size();
@@ -260,19 +281,35 @@ public class ParadeGame {
         }
     }
 
-    // Visually display the parade
+    /**
+     * Displays the current parade of cards in a visual format.
+     * The parade represents the central line of cards that players interact with.
+     * Each card is displayed with its color and value in a formatted layout.
+    */
     private void displayParade() {
         System.out.println("Current Parade:");
         CardDisplayUtil.displayCards(parade);
     }
 
-    // Visually display the player's hand
+    /**
+     * Displays a player's hand of cards in a visual format.
+     * 
+     * @param player The player whose hand will be displayed. Must not be null.
+     * @throws NullPointerException if the player parameter is null.
+    */
     private void displayHand(Player player) {
         System.out.println(player.getName() + "'s Hand:");
         CardDisplayUtil.displayCards(player.getHand());
     }
 
-    // Visually display the collected cards
+    /**
+     * Displays the cards collected by the specified player.
+     * If no cards have been collected, displays an appropriate message.
+     * 
+     * @param currentPlayer The player whose collected cards will be displayed.
+     *                      Must not be null.
+     * @throws NullPointerException if currentPlayer parameter is null.
+    */
     private void displayCollectedCards(Player currentPlayer) {
         System.out.println(currentPlayer.getName() + "'s Collected Cards: ");
         if (currentPlayer.getCollectedCards().size() == 0) {
@@ -282,13 +319,21 @@ public class ParadeGame {
         CardDisplayUtil.displayCards(currentPlayer.getCollectedCards());
     }
 
-    // Visually display a single card
+    /**
+     * Displays a single card in a visual format.
+     * 
+     * @param card The card to display. Must not be null.
+     * @throws NullPointerException if card parameter is null.
+    */
     private void displaySingleCard(Card card) {
         ArrayList<Card> cardAsList = new ArrayList<Card>();
         cardAsList.add(card);
         CardDisplayUtil.displayCards(cardAsList);
     }
     
+    /**
+     * Ends the game by handling final card discards and calculating scores.
+     */
     private void endGame() {        
         // Display each player's collected cards
         for (Player player : players) {
@@ -395,12 +440,24 @@ public class ParadeGame {
                 System.out.println("- " + p.getName());
             }
         }
+        
+        playVictorySound();
 
         if (scanner != null) {
             scanner.close();
         }
     }
 
+    /**
+     * Determines the winner(s) of the game based on players' scores and collected cards.
+     * <p>
+     * The winner is the player with the lowest score. If multiple players have the same
+     * lowest score, the player with the fewest collected cards is preferred. If there's still
+     * a tie, all such players are considered winners.
+     * </p>
+     *
+     * @return an {@code ArrayList} of {@code Player} objects representing the winner(s).
+    */
     private ArrayList<Player> determineWinner() {
         int lowestScore = Integer.MAX_VALUE;
         int fewestCards = Integer.MAX_VALUE;
@@ -430,4 +487,49 @@ public class ParadeGame {
     
         return winnersList;
     }
+
+    /**
+     * Plays a victory sound from a local WAV file and displays a "Congratulations!" 
+     * message character by character using a typewriter effect.
+     *
+     * @throws RuntimeException if there is an issue loading or playing the sound.
+     */
+    private void playVictorySound() {
+        try {
+            File soundFile = new File("resources/tada.wav");
+            if (!soundFile.exists()) {
+                System.out.println("File not found: " + soundFile.getAbsolutePath());
+                return;
+            }
+    
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+    
+            clip.start();
+    
+            String message = "~~ Congratulations! ~~";
+            for (char c : message.toCharArray()) {
+                System.out.print(c);
+                System.out.flush(); // force immediate print
+                Thread.sleep(150);  // adjust typing speed here
+            }
+    
+            // Wait for the rest of the sound to finish (if any)
+            long timeTyped = message.length() * 150L;
+            long totalDuration = clip.getMicrosecondLength() / 1000;
+            long remaining = totalDuration - timeTyped;
+            if (remaining > 0) {
+                Thread.sleep(remaining);
+            }
+    
+            clip.close();
+            System.out.println(); // move to next line
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+
 }
