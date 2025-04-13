@@ -106,7 +106,7 @@ public class Main {
                     if (computerDifficulty >= 1 && computerDifficulty <= 3) {
                         break;
                     } else {
-                        System.out.println("Invalid difficulty. Please select a number from 1 and 3.");
+                        System.out.println("Invalid difficulty. Please select a number from 1 to 3.");
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("Please enter a valid integer value!");

@@ -34,7 +34,7 @@ public class ParadeGame {
      * 
      * @param numPlayers The number of players participating in the game.
      * @param numComputers The number of computer players participating in the game.
-     * @param computerDifficulty The AI difficulty level (1: Easy, 2: Medium, 3: Hard).
+     * @param computerDifficulty The computer difficulty level (1: Easy, 2: Medium, 3: Hard).
     */
     public ParadeGame(int numPlayers, int numComputers, int computerDifficulty) {
         deck = new ArrayList<>();
@@ -56,12 +56,18 @@ public class ParadeGame {
         this.scanner = new Scanner(System.in);
         ArrayList<String> playerNames = new ArrayList<>();
         for (int i = 1; i <= numPlayers; i++) {
-            System.out.print("Enter name for Player " + i + ": ");
-            String name = scanner.nextLine().trim();
-            while (name.isEmpty()) {
-                System.out.println("Name cannot be empty!");
+            String name;
+            while (true) {
                 System.out.print("Enter name for Player " + i + ": ");
                 name = scanner.nextLine().trim();
+        
+                if (name.isEmpty()) {
+                    System.out.println("Name cannot be empty!");
+                } else if (playerNames.contains(name)) { // No duplicate names
+                    System.out.println("Name already taken!");
+                } else {
+                    break; // Valid name
+                }
             }
             playerNames.add(name);
         }
@@ -83,7 +89,7 @@ public class ParadeGame {
 
         // Set up the initial parade (6 cards)
         for (int i = 0; i < 6; i++) {
-            parade.add(deck.remove(0)); // remove the top card from the deck and add it to the parade
+            parade.add(deck.remove(0)); // Remove the top card from the deck and add it to the parade
         }
 
         // Set random starting player (reusing instance method from Computer)
@@ -150,7 +156,7 @@ public class ParadeGame {
                         if (cardIndex >= 0 && cardIndex < currentPlayer.getHandSize()) {
                             break; // valid input
                         } else {
-                            System.out.println("Invalid index! Please enter a valid card index from 0 to 4.");
+                            System.out.println("Invalid index! Please enter a valid card index.");
                         }
                     } catch (NumberFormatException e) {
                         if (!input.isEmpty()) {
@@ -417,7 +423,7 @@ public class ParadeGame {
                         if (cardIndex1 >= 0 && cardIndex1 < player.getHandSize()) {
                             break; // Valid index
                         } else {
-                            System.out.println("Invalid index! Please choose a valid index from 0 to 4.");
+                            System.out.println("Invalid index! Please choose a valid card index.");
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Please enter a valid integer value!");
@@ -464,7 +470,7 @@ public class ParadeGame {
                         if (cardIndex2 >= 0 && cardIndex2 < player.getHandSize()) {
                             break; // Valid input
                         } else {
-                            System.out.println("Invalid index! Please choose a valid index from 0 to 4.");
+                            System.out.println("Invalid index! Please choose a valid card index.");
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Please enter a valid integer value!");

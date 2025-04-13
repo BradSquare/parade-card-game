@@ -102,7 +102,7 @@ public class Computer extends Player {
      * Generates a random integer for the computer player's turn.
      * 
      * @param range The upper bound (inclusive) for the random integer.
-     * @return A random integer between 0 and max.
+     * @return A random integer between 0 and range.
     */
     public static int getRandomInt(int range) {
         Random random = new Random();
