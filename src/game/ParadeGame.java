@@ -56,7 +56,7 @@ public class ParadeGame {
         this.scanner = new Scanner(System.in);
         ArrayList<String> playerNames = new ArrayList<>();
         for (int i = 1; i <= numPlayers; i++) {
-            System.out.print("\nEnter name for Player " + i + ": ");
+            System.out.print("Enter name for Player " + i + ": ");
             String name = scanner.nextLine().trim();
             while (name.isEmpty()) {
                 System.out.println("Name cannot be empty!");
@@ -105,25 +105,19 @@ public class ParadeGame {
      * Starts the game by dealing initial hands and running the game loop.
     */
     public void startGame() {
-        int playedCount = 1;
         // Game loop
         while (!isGameOver()) {
             // Define the current player
             Player currentPlayer = players.get(currentPlayerIndex);
     
-            System.out.println("--------------------------------------------------------------------------------------------------------------");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
             displayParade();
             System.out.println("Cards left in the deck: " + deck.size());
-            System.out.println("--------------------------------------------------------------------------------------------------------------");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
             LoadingUtil.Delay();
             LoadingUtil.Delay();
 
             System.out.println(currentPlayer.getName() + ", your turn!\n");
-
-            // Do not display collected cards if it is the first round
-            if (playedCount > players.size()) {
-                displayCollectedCards(currentPlayer);
-            }
 
             displayHand(currentPlayer);
     
@@ -137,7 +131,7 @@ public class ParadeGame {
             if (currentPlayer instanceof Computer) { // Current player is a computer
                 Computer computer = (Computer) currentPlayer;
                 playedCard = computer.playCard(parade);
-                System.out.println("\n" + currentPlayer.getName() + " is thinking");
+                System.out.print("\n" + currentPlayer.getName() + " is thinking");
                 LoadingUtil.Ellipsis();
             } else { // Current player is an actual person playing.
                 while (true) {  // Keep asking for input until a valid one is given
@@ -147,7 +141,7 @@ public class ParadeGame {
 
                     // If user just pressed Enter without typing anything
                     if (input.isEmpty()) {
-                        System.out.println("Invalid choice! Please enter a valid card index.\n");
+                        System.out.println("Please enter a valid integer value!");
                         continue;
                     }
 
@@ -156,12 +150,12 @@ public class ParadeGame {
                         if (cardIndex >= 0 && cardIndex < currentPlayer.getHandSize()) {
                             break; // valid input
                         } else {
-                            System.out.println("Invalid choice! Please enter a valid card index.\n");
+                            System.out.println("Invalid index! Please enter a valid card index from 0 to 4.");
                         }
                     } catch (NumberFormatException e) {
                         if (!input.isEmpty()) {
                             // Print error message
-                            System.out.println("Invalid choice! Please enter a valid card index.\n");
+                            System.out.println("Please enter a valid integer value!");
                         }
                     } 
 
@@ -180,6 +174,8 @@ public class ParadeGame {
     
             // Remove cards from the parade if necessary (based on the played card)
             handleCardRemoval(playedCard, currentPlayer);
+
+            displayCollectedCards(currentPlayer);
     
             // Draw a new card from the deck if available
             if (!deck.isEmpty()) {
@@ -189,8 +185,6 @@ public class ParadeGame {
             // Move to the next player
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
             
-            playedCount++;
-
             LoadingUtil.Delay();
             LoadingUtil.Delay();
             LoadingUtil.Delay();
@@ -198,10 +192,9 @@ public class ParadeGame {
         }
         
         // End the game and show results
-        System.out.println("--------------------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
         endGame();
-        System.out.println("--------------------------------------------------------------------------------------------------------------");
-
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
     }
 
     /**
@@ -223,7 +216,7 @@ public class ParadeGame {
             lastRoundTurnsTaken++;
     
             if (lastRoundTurnsTaken >= players.size()) {
-                System.out.println("--------------------------------------------------------------------------------------------------------------");
+                System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
                 System.out.println("Final round is completed. Game Over!");
                 return true;
             }
@@ -233,8 +226,10 @@ public class ParadeGame {
         // If a player has collected all 6 colours
         for (Player player : players) {
             if (hasCollectedAllColours(player)) {
-                System.out.println("--------------------------------------------------------------------------------------------------------------");
+                System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
                 System.out.println(player.getName() + " has collected all six colours! Last round begins.");
+                LoadingUtil.Delay();
+                LoadingUtil.Delay();
                 lastRoundTriggered = true;
                 lastRoundTurnsTaken = 0; // Reset counter for final turns
                 return false;
@@ -243,8 +238,10 @@ public class ParadeGame {
     
         // If the deck is empty and the last round has not been played
         if (deck.isEmpty() && !lastRoundTriggered) {
-            System.out.println("--------------------------------------------------------------------------------------------------------------");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println("Deck is empty! Last round begins.");
+            LoadingUtil.Delay();
+            LoadingUtil.Delay();
             lastRoundTriggered = true;
             lastRoundTurnsTaken = 0; // Reset counter for final turns
             return false;
@@ -410,7 +407,7 @@ public class ParadeGame {
                     String input = scanner.nextLine().trim();
                 
                     if (input.isEmpty()) {
-                        System.out.println("Invalid input! Please enter a valid number.\n");
+                        System.out.println("Please enter a valid integer value!");
                         continue;
                     }
                 
@@ -420,10 +417,10 @@ public class ParadeGame {
                         if (cardIndex1 >= 0 && cardIndex1 < player.getHandSize()) {
                             break; // Valid index
                         } else {
-                            System.out.println("Invalid index! Please choose a valid index.\n");
+                            System.out.println("Invalid index! Please choose a valid index from 0 to 4.");
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println("Invalid input! Please enter a valid number.\n");
+                        System.out.println("Please enter a valid integer value!");
                     }
                 }
                 System.out.println();
@@ -435,7 +432,7 @@ public class ParadeGame {
             System.out.println(player.getName() + " discarded:");
             displaySingleCard(discardedCard1);
 
-            System.out.println("--------------------------------------------------------------------------------------------------------------");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
 
             // Display the updated hand
             System.out.print("After discarding the 1st card, ");
@@ -457,7 +454,7 @@ public class ParadeGame {
                     String input = scanner.nextLine().trim();
                 
                     if (input.isEmpty()) {
-                        System.out.println("Invalid input! Please enter a valid number.\n");
+                        System.out.println("Please enter a valid integer value!");
                         continue;
                     }
                 
@@ -467,10 +464,10 @@ public class ParadeGame {
                         if (cardIndex2 >= 0 && cardIndex2 < player.getHandSize()) {
                             break; // Valid input
                         } else {
-                            System.out.println("Invalid index! Please choose a valid index.\n");
+                            System.out.println("Invalid index! Please choose a valid index from 0 to 4.");
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println("Invalid input! Please enter a valid number.\n");
+                        System.out.println("Please enter a valid integer value!");
                     }
                 }
             }            
@@ -481,7 +478,7 @@ public class ParadeGame {
             System.out.println(player.getName() + " discarded:");
             displaySingleCard(discardedCard2);
 
-            System.out.println("--------------------------------------------------------------------------------------------------------------");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
 
             // Add the remaining cards in hand to collected cards
             for (Card card : player.getHand()) {

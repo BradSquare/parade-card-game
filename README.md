@@ -44,7 +44,7 @@ Players play their hand of cards while trying not to get any cards from the para
 + Choose number of computer(s) (if applicable)
 + Choose Computer Difficulty (if applicable)
 + Enter player(s)’ name
-+ Each round, select your cards to play by inputting card index from 0     to 4
++ Each round, select your cards to play by inputting card index from 0 to 4
 + Repeat until game over... 🎉
 + Each Player/Computer chooses 2 cards to discard
 + Winner is announced! 🏅
@@ -60,7 +60,7 @@ The start player is determined randomly. The deck is shuffled and each player re
 
 ## Player turn
 During a player’s turn, the player performs the following actions in the order given below.
-1. Choose one of the cards in hand and place it at the end of the parade.
+1. Choose one of the cards in hand and place it at the end of the parade (right side of the parade).
 2. If necessary, cards will be removed from the parade and added to the players’ collected cards.
 3. Draw a card from the draw pile. The next player performs the same actions during his or her turn.
 

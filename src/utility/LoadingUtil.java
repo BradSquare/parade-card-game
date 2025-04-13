@@ -14,14 +14,14 @@ public class LoadingUtil {
         System.out.print("\nCreating the Wonderland");
         Ellipsis();
 
-        System.out.print("\nDecorating the streets");
+        System.out.print("Decorating the streets");
         Ellipsis();
 
-        System.out.print("\nPreparing the costumes");
+        System.out.print("Preparing the costumes");
         Ellipsis();
         Delay();
 
-        System.out.println("\nDone!");
+        System.out.println("Done!");
         Delay();
 
         System.out.println("        ,--.   ,--.      ,--.                             ,--------.       ,--------.,--.            ");
@@ -54,7 +54,7 @@ public class LoadingUtil {
             Delay();
             System.out.print(".");
         }
-        System.out.println();
+        System.out.println("\n");
     }
 
     // Pauses the program to create a short delay
