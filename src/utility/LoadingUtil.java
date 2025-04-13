@@ -60,7 +60,7 @@ public class LoadingUtil {
     // Pauses the program to create a short delay
     public static void Delay(){
         try {
-            Thread.sleep(500); // Wait 500 milliseconds
+            Thread.sleep(400); // Wait 400 milliseconds
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
